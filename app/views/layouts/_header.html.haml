@@ -1,11 +1,12 @@
 %header#page_header
   %table
-    %th=link_to 'Vocabulaire', '#' \
-    %th=link_to 'Conjugaison', '#' \
-    %th=link_to 'Révision du vocabulaire', '#' \
-    %th=link_to 'Révision des conjugaisons', '#' \
-    %th=link_to 'Révision', '#' \
-    %th=link_to 'Paramétrage', '#' \
+    %th=link_to 'Vocabulaire', mots_path \
+    %th=link_to 'Conjugaison', verbes_path \
+    -if user_signed_in? and not current_user.admin
+      %th=link_to 'Révision du vocabulaire', '#' \
+      %th=link_to 'Révision des conjugaisons', '#' \
+      %th=link_to 'Révision', '#' \
+      %th=link_to 'Paramétrage', '#' \
     -if user_signed_in?
       %th=link_to "Déconnecter #{current_user.email}", destroy_user_session_path, method: :delete
     -else
