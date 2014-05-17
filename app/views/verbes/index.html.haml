@@ -1,0 +1,19 @@
+%h1 Listing verbes
+
+%table
+  %tr
+    %th Infinitif
+    %th
+    %th
+    %th
+
+  - @verbes.each do |verbe|
+    %tr
+      %td= verbe.infinitif
+      %td= link_to 'Show', verbe
+      %td= link_to 'Edit', edit_verbe_path(verbe)
+      %td= link_to 'Destroy', verbe, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Verbe', new_verbe_path
