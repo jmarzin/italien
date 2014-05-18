@@ -9,7 +9,13 @@ class MotsController < ApplicationController
   # GET /mots
   # GET /mots.json
   def index
-    @mots = Mot.all
+    session[:page] = (params[:page] ||= session[:page])
+    if @peut_corriger and not @peut_supprimer
+      @mots = current_user.mots.merge(ScoresMot.where("(date_rev_1 is null or date_rev_1 >= ?) and compteur >= ?",\
+        current_user.parametre.voc_revision_1_min,current_user.parametre.voc_compteur_min)).order(:mot_directeur).page params[:page]
+    else
+      @mots = Mot.order(:mot_directeur).page params[:page]
+    end
   end
 
   # GET /mots/1

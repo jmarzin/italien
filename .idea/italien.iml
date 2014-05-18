@@ -322,5 +322,9 @@
     <orderEntry type="library" scope="PROVIDED" name="xpath (v2.0.0, rbenv: 2.1.0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="zeus (v0.13.3, rbenv: 2.1.0) [gem]" level="application" />
   </component>
+  <component name="RModuleSettingsStorage">
+    <LOAD_PATH number="0" />
+    <I18N_FOLDERS number="1" string0="$MODULE_DIR$/config/locales" />
+  </component>
 </module>
 
