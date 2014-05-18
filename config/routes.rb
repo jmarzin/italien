@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
 
-  get 'registrations/after_sign_up'
+  resources :parametres, only: [:edit, :update]
 
   resources :mots
 

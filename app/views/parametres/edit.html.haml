@@ -1,0 +1,36 @@
+%h1 Paramétrage des révisions
+%p#notice=notice
+= form_for @parametre do |f|
+  - if @parametre.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@parametre.errors.count, "erreurs ")} empêchant la création du paramétrage :"
+      %ul
+        - @parametre.errors.full_messages.each do |msg|
+          %li= msg
+
+  .field
+    = f.label :voc_compteur_min
+    = f.text_field :voc_compteur_min
+  .field
+    = f.label :voc_revision_1_min
+    = f.text_field :voc_revision_1_min
+  %p="Nombre de mots : #{@voc_nb}"
+  %br
+  .actions
+    = f.submit 'Enregistrer'
+
+-#%h2 Conjugaison
+
+  -Compteur
+  =number_field_tag('conj_compteur_min',value = @conj_compteur_min)
+  Date de création
+  = select_date Date.parse(@conj_date_min), prefix: :conj_date_min
+  =hidden_field_tag 'conj_nb', value = @conj_nb
+  Nombre =
+  -if @conj_nb == 0
+    #erreur=@conj_nb
+  -else
+    =@conj_nb
+  %br
+  %br
+

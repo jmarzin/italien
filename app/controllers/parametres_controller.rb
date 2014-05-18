@@ -1,33 +1,37 @@
 class ParametresController < ApplicationController
-  before_action :set_session, only: [:edit]
+  before_action :authenticate_user!
+  before_action :set_parametre, only: [:edit, :update]
+
   # GET /parametres/edit
   def edit
-    @voc_nb = Vocabulaire.where("created_at >= ? and compteur >= ?",@voc_date_min,@voc_compteur_min).count
+    if current_user.admin
+      redirect_to mots_path, notice: "Vous ne pouvez pas paramètrer la révision"
+    else
+      @voc_nb = current_user.scores_mots.where("(date_rev_1 is null or date_rev_1 >= ?) and compteur >= ?",\
+        current_user.parametre.voc_revision_1_min,current_user.parametre.voc_compteur_min).count
+      @parametre = current_user.parametre
+    end
   end
 
   def update
-    @avert = ''
-    @voc_compteur_min = params[:voc_compteur_min]
-    @voc_date_min = params[:voc_date_min][:year]+'-'+params[:voc_date_min][:month]+'-'+params[:voc_date_min][:day]
-    @voc_nb = Vocabulaire.where("created_at >= ? and compteur >= ?",@voc_date_min,@voc_compteur_min).count
-    if @voc_nb == 0
-      @avert = 'Paramètres trop restrictifs pour le vocabulaire'
-    else
-      @avert += ' et pour le vocabulaire'
+    respond_to do |format|
+      if @parametre.update(parametre_params)
+        format.html { render action: 'edit', notice: 'Mot was successfully updated.' }
+        format.json { head :no_content }
+      else
+        format.html { render action: 'edit' }
+        format.json { render json: @mot.errors, status: :unprocessable_entity }
+      end
     end
-    if @avert == ''
-      session[:voc_compteur_min] = params[:voc_compteur_min]
-      session[:voc_date_min] = params[:voc_date_min][:year]+'-'+params[:voc_date_min][:month]+'-'+params[:voc_date_min][:day]
-      session[:page]=nil
-    end
-    render action: 'edit'
   end
 
   private
-    def set_session
-      session[:voc_compteur_min] ||= 0
-      session[:voc_date_min] ||= Vocabulaire.minimum('created_at').to_s
-      session[:conj_compteur_min] ||= 0
-      session[:conj_date_min] ||= Conjugaison.minimum('created_at').to_s
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_parametre
+    @parametre = Parametre.find(params[:id])
+  end
+
+  def parametre_params
+    params.require(:parametre).permit(:voc_compteur_min, :voc_revision_1_min)
+  end
 end

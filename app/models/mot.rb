@@ -2,6 +2,7 @@ class Mot < ActiveRecord::Base
 
   validates :mot_directeur, presence: {message: 'Le mot directeur est obligatoire'}
   validates :francais, presence: {message: 'Le mot ou expression en français est obligatoire'}
+  validates :francais, uniqueness: {message: 'Le mot existe déjà' }
   validates :italien, presence: {message: 'La traduction italienne est obligatoire'}
 
   def update(mot_params)
