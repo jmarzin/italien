@@ -1,0 +1,15 @@
+%p#notice= notice
+
+%p
+  %b Mot directeur:
+  = @mot.mot_directeur
+%p
+  %b Francais:
+  = @mot.francais
+%p
+  %b Italien:
+  = @mot.italien
+
+= link_to 'Edit', edit_mot_path(@mot)
+\|
+= link_to 'Back', mots_path

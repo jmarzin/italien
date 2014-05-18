@@ -1,0 +1,19 @@
+= form_for @mot do |f|
+  - if @mot.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@mot.errors.count, "error")} prohibited this mot from being saved:"
+      %ul
+        - @mot.errors.full_messages.each do |msg|
+          %li= msg
+
+  .field
+    = f.label :mot_directeur
+    = f.text_field :mot_directeur
+  .field
+    = f.label :francais
+    = f.text_field :francais
+  .field
+    = f.label :italien
+    = f.text_field :italien
+  .actions
+    = f.submit 'Save'

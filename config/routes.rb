@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  resources :mots
+
   resources :verbes
 
   devise_for :users
@@ -8,7 +10,7 @@ Rails.application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  root 'verbes#index'
+  root 'mots#index'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

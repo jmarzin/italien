@@ -1,0 +1,28 @@
+%h1 Liste des mots et expressions
+
+%table
+  %tr
+    %th Mot directeur
+    %th Francais
+    %th Italien
+    %th
+    -if @peut_corriger
+      %th
+    -if @peut_supprimer
+      %th
+
+  - @mots.each do |mot|
+    %tr
+      %td= mot.mot_directeur
+      %td= mot.francais
+      %td= mot.italien
+      %td= link_to 'Voir', mot
+      -if @peut_corriger
+        %td= link_to 'Corr', edit_mot_path(mot)
+      -if @peut_supprimer
+        %td= link_to 'Supp', mot, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+-if @peut_supprimer
+  = link_to 'Nouveau', new_mot_path
