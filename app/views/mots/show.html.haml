@@ -17,4 +17,7 @@
 -if @peut_corriger
   = link_to 'Corr', edit_mot_path(@mot)
   \|
+-if @peut_supprimer
+  = link_to 'Nouveau', new_mot_path
+  \|
 = link_to 'Retour', mots_path

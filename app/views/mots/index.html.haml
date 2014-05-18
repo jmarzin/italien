@@ -27,6 +27,6 @@
         %td= link_to 'Supp', mot, :method => :delete, :data => { :confirm => 'Are you sure?' }
 
 %br
-
+= paginate @mots
 -if @peut_supprimer
   = link_to 'Nouveau', new_mot_path
