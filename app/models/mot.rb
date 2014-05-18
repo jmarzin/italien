@@ -14,7 +14,7 @@ class Mot < ActiveRecord::Base
     self.save
   end
 
-  has_many :scores_mots
+  has_many :scores_mots, dependent: :destroy
   accepts_nested_attributes_for :scores_mots
   has_many :users, through: :scores_mots
 

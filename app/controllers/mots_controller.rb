@@ -1,9 +1,9 @@
 class MotsController < ApplicationController
 
   before_action :prepare_user
+  before_action :set_autorisations
   before_action :set_mot, only: [:show, :edit, :update, :destroy]
-  before_action :set_autorisations, only: [:index, :new, :show, :edit]
-  before_action :authenticate_user!, only: [:new]
+  before_action :authenticate_user!, only: [:new, :edit, :update, :destroy]
 
 
   # GET /mots
@@ -71,10 +71,14 @@ class MotsController < ApplicationController
   # DELETE /mots/1
   # DELETE /mots/1.json
   def destroy
-    @mot.destroy
-    respond_to do |format|
-      format.html { redirect_to mots_url }
-      format.json { head :no_content }
+    if @peut_supprimer
+      @mot.destroy
+      respond_to do |format|
+        format.html { redirect_to mots_url }
+        format.json { head :no_content }
+      end
+    else
+      redirect_to mots_path, notice: "Vous ne pouvez pas supprimer un mot"
     end
   end
 
