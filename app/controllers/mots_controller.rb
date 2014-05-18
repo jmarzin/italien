@@ -58,7 +58,7 @@ class MotsController < ApplicationController
   def destroy
     @mot.destroy
     respond_to do |format|
-      format.html { redirect_to mots_url }
+      format.html { redirect_to mots_url }an
       format.json { head :no_content }
     end
   end
