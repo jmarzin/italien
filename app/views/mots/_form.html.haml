@@ -1,19 +1,26 @@
 = form_for @mot do |f|
   - if @mot.errors.any?
     #error_explanation
-      %h2= "#{pluralize(@mot.errors.count, "error")} prohibited this mot from being saved:"
+      %h2= "#{pluralize(@mot.errors.count, "erreurs ")} empêchant la création du mot :"
       %ul
         - @mot.errors.full_messages.each do |msg|
           %li= msg
 
   .field
     = f.label :mot_directeur
-    = f.text_field :mot_directeur
+    = f.text_field :mot_directeur, :disabled => !(@peut_supprimer)
   .field
     = f.label :francais
-    = f.text_field :francais
+    = f.text_field :francais, :disabled => !(@peut_supprimer)
   .field
     = f.label :italien
-    = f.text_field :italien
+    = f.text_field :italien, :disabled => !(@peut_supprimer)
+  -coll = @mot.scores_mots.where(user_id: current_user.id)
+  -if coll.empty? then coll=@mot.scores_mots end
+  -coll.each do |scores_mot|
+    = f.fields_for :scores_mots, scores_mot do |scores_mots_form|
+      = scores_mots_form.hidden_field :user_id
+      = scores_mots_form.label :compteur
+      = scores_mots_form.number_field :compteur
   .actions
-    = f.submit 'Save'
+    = f.submit 'Enregistrer'

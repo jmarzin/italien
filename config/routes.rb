@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  get 'registrations/after_sign_up'
+
   resources :mots
 
   resources :verbes

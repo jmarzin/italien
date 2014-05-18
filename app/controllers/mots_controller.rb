@@ -1,7 +1,10 @@
 class MotsController < ApplicationController
 
+  before_action :prepare_user
   before_action :set_mot, only: [:show, :edit, :update, :destroy]
-  before_action :set_autorisations, only: [:index]
+  before_action :set_autorisations, only: [:index, :new, :show, :edit]
+  before_action :authenticate_user!, only: [:new]
+
 
   # GET /mots
   # GET /mots.json
@@ -16,7 +19,12 @@ class MotsController < ApplicationController
 
   # GET /mots/new
   def new
-    @mot = Mot.new
+    if @peut_supprimer
+      @mot = Mot.new
+      @mot.scores_mots.build(user_id: current_user.id,compteur: Mot::MAX_ESSAIS)
+    else
+      redirect_to mots_path, notice: "Vous ne pouvez pas créer un nouveau mot"
+    end
   end
 
   # GET /mots/1/edit
@@ -30,7 +38,14 @@ class MotsController < ApplicationController
 
     respond_to do |format|
       if @mot.save
-        format.html { redirect_to @mot, notice: 'Mot was successfully created.' }
+        compteur = @mot.scores_mots[0].compteur
+        User.all.each do |u|
+          unless u.id == current_user.id
+            u.scores_mots.build(user_id: u.id,mot_id: @mot.id,compteur: compteur)
+            u.save
+          end
+        end
+        format.html { redirect_to @mot, notice: 'Le mot a été créé' }
         format.json { render action: 'show', status: :created, location: @mot }
       else
         format.html { render action: 'new' }
@@ -58,7 +73,7 @@ class MotsController < ApplicationController
   def destroy
     @mot.destroy
     respond_to do |format|
-      format.html { redirect_to mots_url }an
+      format.html { redirect_to mots_url }
       format.json { head :no_content }
     end
   end
@@ -77,13 +92,25 @@ class MotsController < ApplicationController
         end
       end
     end
-
     def set_mot
       @mot = Mot.find(params[:id])
+    end
+    def prepare_user
+      if user_signed_in?
+        unless current_user.admin
+          if current_user.mots.empty?
+            User.where(admin: true).first.scores_mots.each do |sco|
+              current_user.scores_mots.build(mot_id: sco.mot_id, compteur: sco.compteur)
+            end
+            current_user.save
+          end
+        end
+      end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def mot_params
-      params.require(:mot).permit(:mot_directeur, :francais, :italien)
+      params.require(:mot).permit(:mot_directeur, :francais, :italien, \
+        scores_mots_attributes: [:compteur,:user_id])
     end
 end

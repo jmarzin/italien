@@ -9,7 +9,12 @@
 %p
   %b Italien:
   = @mot.italien
+-if user_signed_in?
+  %p
+    %b Compteur:
+    = @mot.scores_mots.where(user_id: current_user.id).first.compteur
 
-= link_to 'Edit', edit_mot_path(@mot)
-\|
-= link_to 'Back', mots_path
+-if @peut_corriger
+  = link_to 'Corr', edit_mot_path(@mot)
+  \|
+= link_to 'Retour', mots_path

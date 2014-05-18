@@ -1,10 +1,12 @@
 %h1 Liste des mots et expressions
-
-%table
+%p#notice= notice
+%table#mot
   %tr
     %th Mot directeur
     %th Francais
     %th Italien
+    %th Créé le
+    %th Modifié le
     %th
     -if @peut_corriger
       %th
@@ -16,6 +18,8 @@
       %td= mot.mot_directeur
       %td= mot.francais
       %td= mot.italien
+      %td= mot.created_at.strftime('%Y/%m/%d')
+      %td= mot.updated_at.strftime('%Y/%m/%d')
       %td= link_to 'Voir', mot
       -if @peut_corriger
         %td= link_to 'Corr', edit_mot_path(mot)
