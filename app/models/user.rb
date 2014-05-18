@@ -5,4 +5,5 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
   has_many :scores_mots
   has_many :mots, through: :scores_mots
+  has_one  :parametre
 end

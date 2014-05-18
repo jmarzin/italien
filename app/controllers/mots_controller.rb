@@ -108,6 +108,10 @@ class MotsController < ApplicationController
             end
             current_user.save
           end
+          if current_user.parametre == nil
+            current_user.create_parametre(voc_compteur_min: 0, \
+              voc_revision_1_min: current_user.scores_mots.minimum('date_rev_1') || Time.now)
+          end
         end
       end
     end
