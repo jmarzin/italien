@@ -3,7 +3,7 @@
     %th=link_to 'Vocabulaire', mots_path \
     %th=link_to 'Conjugaison', verbes_path \
     -if user_signed_in? and not current_user.admin
-      %th=link_to 'Révision du vocabulaire', '#' \
+      %th=link_to 'Révision du vocabulaire', questions_vocabulaire_path \
       %th=link_to 'Révision des conjugaisons', '#' \
       %th=link_to 'Révision', '#' \
       %th=link_to 'Paramétrage', edit_parametre_path(current_user.parametre) \

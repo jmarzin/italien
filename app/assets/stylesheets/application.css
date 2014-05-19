@@ -14,5 +14,12 @@
  *= require_self
  */
 #erreur {
+    display: inline;
+    font-weight: bold;
     color: red;
+}
+#attendu {
+    display: inline;
+    font-weight: bold;
+    color: darkred;
 }

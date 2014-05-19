@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
 
+  get 'questions/vocabulaire'
+  post 'questions/verification'
+
   resources :parametres, only: [:edit, :update]
 
   resources :mots
