@@ -1,9 +1,9 @@
 =form_tag('verification')
 
--if session[:erreur]
-  %h1 Question de vocabulaire : erreurs récentes
--else
+-if session[:erreurs_mots_traitees]
   %h1 Question de vocabulaire au hasard
+-else
+  %h1 Question de vocabulaire : erreurs récentes
 
 
 %p

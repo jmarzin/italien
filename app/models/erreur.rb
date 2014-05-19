@@ -4,7 +4,7 @@ class Erreur < ActiveRecord::Base
   belongs_to :mot
 
   validates :code, inclusion: {in: ['mot'], message: 'Le type doit être vocabulaire'}
-  validates :reponse, presence: {message: 'La réponse est obligatoire'}
+  validates :attendu, presence: {message: 'La réponse attendue est obligatoire'}
 
   def self.accepte?(reponse, attendu, objet, user_id)
     if reponse == ''

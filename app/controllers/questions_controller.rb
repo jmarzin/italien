@@ -1,55 +1,15 @@
 class QuestionsController < ApplicationController
     before_action :authenticate_user!
 
-  # # GET/questions/lance
-  # def lance
-  #   session[:revision] = true
-  #   if session[:debut]
-  #     @erreur = Erreur.where("created_at < ?", Time.at(session[:debut])).first
-  #   else
-  #     @erreur = Erreur.first
-  #   end
-  #   if @erreur
-  #     session[:erreur]=true
-  #     session[:id]=@erreur.ref
-  #     session[:type]=@erreur.code
-  #     session[:forme]=@erreur.forme
-  #     @erreur.destroy
-  #     redirect_to action: session[:type]
-  #   else
-  #     session[:erreur]=false
-  #     if (rand*4).ceil > 3
-  #      redirect_to action: 'conjugaison'
-  #     else
-  #       redirect_to action: 'vocabulaire'
-  #     end
-  #   end
-  # end
-  #
-  # # GET/questions/conjugaison
-  # def conjugaison
-  #   session[:type] = 'conjugaison'
-  #   if session[:id]
-  #     @resultat = Conjugaison.question(session[:id], session[:forme])
-  #     session[:id]=nil
-  #   else
-  #     @resultat = Conjugaison.tirage(Conjugaison.aleatoire(session[:conj_compteur_min],\
-  #       session[:conj_date_min]),session[:conj_compteur_min],session[:conj_date_min])
-  #     unless @resultat
-  #       redirect_to parametres_edit_path
-  #       return
-  #     end
-  #   end
-  #   unless session.has_key?(:debut)
-  #     session[:debut] = Time.now.to_i
-  #     session[:bonnes_reponses], session[:mauvaises_reponses] = 0,0
-  #   end
-  #   params[:id] = @resultat[:conjugaison].id
-  #   params[:infinitif] = @resultat[:conjugaison].infinitif
-  #   params[:attendu] = @resultat[:attendu]
-  #   params[:forme] = @resultat[:forme]
-  #   params[:question] = Verbe.en_clair(@resultat[:forme])+@resultat[:conjugaison].infinitif+' ?'
-  # end
+  # GET/questions/lance
+  def lance
+    session[:revision] = true
+    if (rand*4).ceil > 3
+      redirect_to action: 'vocabulaire'
+    else
+      redirect_to action: 'vocabulaire'
+    end
+  end
 
   #GET/questions/vocabulaire
   def vocabulaire
@@ -62,16 +22,19 @@ class QuestionsController < ApplicationController
       session[:debut] = Time.now.to_i
       session[:bonnes_reponses],session[:mauvaises_reponses] = 0,0
     end
-#    if session[:id]
-#      @resultat = Vocabulaire.question(session[:id])
-#      session[:id]=nil
-#    else
-    @mot = current_user.tirage_mot
+    if session[:erreurs_mots_traitees]
+      @mot = current_user.tirage_mot
+    else
+      @mot = current_user.err_mot_sess_prec(session[:debut])
+      unless @mot
+        @mot = current_user.tirage_mot
+        session[:erreurs_mots_traitees] = true
+      end
+    end
     unless @mot
       redirect_to parametres_edit_path, 'Les paramètres sont trop restrictifs'
       return
     end
-#    end
     params[:id] = @mot.id
     params[:question] = @mot.francais
     params[:attendu] = @mot.italien

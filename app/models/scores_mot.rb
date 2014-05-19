@@ -14,6 +14,8 @@ class ScoresMot < ActiveRecord::Base
     else
       self.compteur = 1
     end
+    self.date_rev_1 ||= Time.now
+    self.date_rev_n = Time.now
     self
   end
 

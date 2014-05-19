@@ -25,6 +25,16 @@ class User < ActiveRecord::Base
   has_many :erreurs, dependent: :destroy
   has_one  :parametre
 
+  def err_mot_sess_prec(date)
+    erreur = self.erreurs.where("created_at < ?",Time.at(date)).first
+    if not erreur
+      return false
+    end
+    @mot = Mot.find(erreur.mot_id)
+    erreur.destroy
+    @mot
+  end
+
   def stats(bonnes, mauvaises)
     texte = ''
     if bonnes+mauvaises > 0

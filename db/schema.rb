@@ -11,17 +11,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140519063247) do
+ActiveRecord::Schema.define(version: 20140519201524) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "erreurs", force: true do |t|
-    t.string  "code"
-    t.string  "attendu"
-    t.string  "reponse"
-    t.integer "user_id"
-    t.integer "mot_id"
+    t.string   "code"
+    t.string   "attendu"
+    t.string   "reponse"
+    t.integer  "user_id"
+    t.integer  "mot_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "mots", force: true do |t|
@@ -41,11 +43,11 @@ ActiveRecord::Schema.define(version: 20140519063247) do
   end
 
   create_table "scores_mots", force: true do |t|
-    t.integer "compteur"
-    t.date    "date_rev_1"
-    t.date    "date_rev_n"
-    t.integer "user_id"
-    t.integer "mot_id"
+    t.integer  "compteur"
+    t.datetime "date_rev_1"
+    t.datetime "date_rev_n"
+    t.integer  "user_id"
+    t.integer  "mot_id"
   end
 
   add_index "scores_mots", ["user_id", "mot_id"], name: "index_scores_mots_on_user_id_and_mot_id", unique: true, using: :btree

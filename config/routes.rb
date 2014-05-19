@@ -2,6 +2,7 @@ Rails.application.routes.draw do
 
   get 'questions/vocabulaire'
   post 'questions/verification'
+  get 'questions', to: 'questions#lance', as: 'lance_questions'
 
   resources :parametres, only: [:edit, :update]
 
