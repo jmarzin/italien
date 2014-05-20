@@ -16,8 +16,8 @@ class Mot < ActiveRecord::Base
   end
 
   has_many :scores_mots, dependent: :destroy
-  has_many :erreurs, dependent: :destroy
   accepts_nested_attributes_for :scores_mots
+  has_many :erreurs, dependent: :destroy
   has_many :users, through: :scores_mots
 
 

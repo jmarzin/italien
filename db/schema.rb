@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140519201524) do
+ActiveRecord::Schema.define(version: 20140520205350) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,6 +24,15 @@ ActiveRecord::Schema.define(version: 20140519201524) do
     t.integer  "mot_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "forme_id"
+  end
+
+  create_table "formes", force: true do |t|
+    t.integer  "rang_forme"
+    t.string   "italien"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "verbe_id"
   end
 
   create_table "mots", force: true do |t|
@@ -39,6 +48,16 @@ ActiveRecord::Schema.define(version: 20140519201524) do
     t.date     "voc_revision_1_min"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "user_id"
+  end
+
+  create_table "scores_formes", force: true do |t|
+    t.integer  "compteur"
+    t.datetime "date_rev_1"
+    t.datetime "date_rev_n"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "forme_id"
     t.integer  "user_id"
   end
 

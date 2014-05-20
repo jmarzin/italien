@@ -2,6 +2,8 @@ class Erreur < ActiveRecord::Base
 
   belongs_to :user
   belongs_to :mot
+  belongs_to :verbe
+  belong_to :forme
 
   validates :code, inclusion: {in: ['mot'], message: 'Le type doit être vocabulaire'}
   validates :attendu, presence: {message: 'La réponse attendue est obligatoire'}

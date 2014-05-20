@@ -24,6 +24,8 @@ class User < ActiveRecord::Base
   has_many :mots, through: :scores_mots
   has_many :erreurs, dependent: :destroy
   has_one  :parametre
+  has_many :scores_formes
+  has_many :formes, through: :scores_formes
 
   def err_mot_sess_prec(date)
     erreur = self.erreurs.where("created_at < ?",Time.at(date)).first
