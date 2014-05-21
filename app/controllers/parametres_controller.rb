@@ -16,7 +16,8 @@ class ParametresController < ApplicationController
   def update
     respond_to do |format|
       if @parametre.update(parametre_params)
-        session[:page] = 1
+        session[:page_m] = 1
+        session[:page_v] = 1
         format.html { redirect_to edit_parametre_path(@parametre), notice: 'Les paramètres ont été mis à jour' }
         format.json { head :no_content }
       else

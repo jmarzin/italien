@@ -9,5 +9,22 @@
   .field
     = f.label :infinitif
     = f.text_field :infinitif
+
+    -i = 0
+
+    %table#saisie_verbe
+
+      = f.fields_for :formes do |formes_form|
+        %td= formes_form.label :italien, Forme::FORMES[i][0]
+        %td= formes_form.text_field :italien, options={size: 10}
+        =formes_form.hidden_field :rang_forme
+        = formes_form.fields_for :scores_formes do |scores_formes|
+          %td= scores_formes.text_field :compteur, options={size: 1}
+          =scores_formes.hidden_field :user_id
+        -i+=1
+        -if i/4*4 == i
+          %tr
+  %br
+
   .actions
     = f.submit 'Save'
