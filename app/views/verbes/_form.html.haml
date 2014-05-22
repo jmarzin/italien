@@ -15,15 +15,16 @@
     %table#saisie_verbe
 
       = f.fields_for :formes do |formes_form|
-        %td= formes_form.label :italien, Forme::FORMES[i][0]
-        %td= formes_form.text_field :italien, options={size: 10}
+        -if i/6*6 == i
+          %tr
+          %td= formes_form.label :italien, Forme::FORMES[i][0]
+        %td= formes_form.text_field :italien, size: 20, class: 'italien'
         =formes_form.hidden_field :rang_forme
         = formes_form.fields_for :scores_formes do |scores_formes|
-          %td= scores_formes.text_field :compteur, options={size: 1}
+          %td= scores_formes.number_field :compteur, class: 'compteur'
           =scores_formes.hidden_field :user_id
         -i+=1
-        -if i/4*4 == i
-          %tr
+
   %br
 
   .actions

@@ -1,19 +1,33 @@
-%h1 Listing verbes
-
-%table
+%h1 Liste des verbes
+%p#notice= notice
+-if user_signed_in?
+  -user_id = current_user.id
+-else
+  -user_id = User.where(admin: true).first.id
+%table#verbe
   %tr
     %th Infinitif
+    %th Compteur
+    %th Créé le
+    %th Modifié le
     %th
-    %th
-    %th
+    -if @peut_corriger
+      %th
+    -if @peut_supprimer
+      %th
 
   - @verbes.each do |verbe|
     %tr
       %td= verbe.infinitif
-      %td= link_to 'Show', verbe
-      %td= link_to 'Edit', edit_verbe_path(verbe)
-      %td= link_to 'Destroy', verbe, :method => :delete, :data => { :confirm => 'Are you sure?' }
+      %td= verbe.total_compteur
+      %td= verbe.created_at.strftime('%Y/%m/%d')
+      %td= verbe.updated_at.strftime('%Y/%m/%d')
+      %td= link_to 'Voir', verbe
+      -if @peut_corriger
+        %td= link_to 'Corr', edit_verbe_path(verbe)
+      -if @peut_supprimer
+        %td= link_to 'Supp', verbe, :method => :delete, :data => { :confirm => 'Supprimer ?' }
 
 %br
 
-= link_to 'New Verbe', new_verbe_path
+= link_to 'Nouveau verbe', new_verbe_path

@@ -30,7 +30,7 @@
       -if @peut_corriger
         %td= link_to 'Corr', edit_mot_path(mot)
       -if @peut_supprimer
-        %td= link_to 'Supp', mot, :method => :delete, :data => { :confirm => 'Are you sure?' }
+        %td= link_to 'Supp', mot, :method => :delete, :data => { :confirm => 'Supprimer ?' }
 
 %br
 = paginate @mots

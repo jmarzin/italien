@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140521191559) do
+ActiveRecord::Schema.define(version: 20140522211827) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,6 +34,8 @@ ActiveRecord::Schema.define(version: 20140521191559) do
     t.datetime "updated_at"
     t.integer  "verbe_id"
   end
+
+  add_index "formes", ["id"], name: "index_formes_on_id", using: :btree
 
   create_table "mots", force: true do |t|
     t.string   "mot_directeur"
@@ -62,6 +64,10 @@ ActiveRecord::Schema.define(version: 20140521191559) do
     t.integer  "forme_id"
     t.integer  "user_id"
   end
+
+  add_index "scores_formes", ["forme_id"], name: "index_scores_formes_on_forme_id", using: :btree
+  add_index "scores_formes", ["id"], name: "index_scores_formes_on_id", using: :btree
+  add_index "scores_formes", ["user_id"], name: "index_scores_formes_on_user_id", using: :btree
 
   create_table "scores_mots", force: true do |t|
     t.integer  "compteur"

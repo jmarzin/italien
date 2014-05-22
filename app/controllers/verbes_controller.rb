@@ -9,9 +9,11 @@ class VerbesController < ApplicationController
   # GET /verbes.json
   def index
     session[:page_v] = (params[:page_v] ||= session[:page_v])
-    if @peut_corriger and not @peut_supprimer
-      @verbes = current_user.formes.merge(ScoresVerbe.where("(date_rev_1 is null or date_rev_1 >= ?) and compteur >= ?",\
-        current_user.parametre.for_revision_1_min,current_user.parametre.for_compteur_min)).order(:infinitif).page params[:page_v]
+    if @peut_corriger and not @peut_supprimere
+      @verbes = Verbe.joins(formes: :scores_formes).where("user_id = ?",current_user.id).\
+        select("verbes.id, infinitif, verbes.created_at, verbes.updated_at, sum(compteur) as total_compteur").\
+        group("verbes.id","infinitif","verbes.created_at","verbes.updated_at").\
+        order(:infinitif).page params[:page_v]
     else
       @verbes = Verbe.order(:infinitif).page params[:page_v]
     end
@@ -27,13 +29,13 @@ class VerbesController < ApplicationController
     if @peut_supprimer
       @verbe = Verbe.new
       Forme::FORMES.each_index do |rang|
-        @verbe.formes << Forme.new(rang_forme: rang)
+        @verbe.formes.build(rang_forme: rang)
       end
       @verbe.formes.each do |forme|
-        forme.scores_formes << ScoresForme.new(user_id: current_user.id,compteur: Forme::MAX_ESSAIS)
+        forme.scores_formes.build(user_id: current_user.id,compteur: Forme::MAX_ESSAIS)
       end
     else
-      redirect_to verbes_path, notice: "Vous ne pouvez pas créer un nouveau verbe"
+      redirect_to verbes_path, notice: 'Vous ne pouvez pas créer un nouveau verbe'
     end
   end
 
@@ -48,10 +50,19 @@ class VerbesController < ApplicationController
 
     respond_to do |format|
       if @verbe.save
-        format.html { redirect_to @verbe, notice: 'Verbe was successfully created.' }
-        format.json { render action: 'show', status: :created, location: @verbe }
+        User.all.each do |u|
+          unless u.id == current_user.id
+            @verbe.formes.each do |forme|
+              forme.scores_formes.each do |score_forme_admin|
+                u.scores_formes.create(forme_id: score_forme_admin.forme_id,compteur: score_forme_admin.compteur)
+              end
+            end
+          end
+        end
+        format.html { redirect_to @verbe, notice: 'Le verbe a bien été créé.' }
+        format.json { render action: 'Voir', status: :created, location: @verbe }
       else
-        format.html { render action: 'new' }
+        format.html { render action: 'Nouveau' }
         format.json { render json: @verbe.errors, status: :unprocessable_entity }
       end
     end
