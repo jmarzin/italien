@@ -47,6 +47,13 @@ class VerbesController < ApplicationController
   # POST /verbes.json
   def create
     @verbe = Verbe.new(verbe_params)
+    formes_reduit = []
+    @verbe.formes.each do |f|
+      unless f.italien == ''
+        formes_reduit << f
+      end
+    end
+    @verbe.formes = formes_reduit
 
     respond_to do |format|
       if @verbe.save
@@ -62,7 +69,7 @@ class VerbesController < ApplicationController
         format.html { redirect_to @verbe, notice: 'Le verbe a bien été créé.' }
         format.json { render action: 'Voir', status: :created, location: @verbe }
       else
-        format.html { render action: 'Nouveau' }
+        format.html { render action: 'New' }
         format.json { render json: @verbe.errors, status: :unprocessable_entity }
       end
     end
