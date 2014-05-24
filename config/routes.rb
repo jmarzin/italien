@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
 
-  get 'questions/vocabulaire'
+  get 'questions/vocabulaire', as: 'questions_vocabulaire'
+  get 'questions/conjugaison', as: 'questions_conjugaison'
   post 'questions/verification'
   get 'questions', to: 'questions#lance', as: 'lance_questions'
   get 'sauve', to: 'sauve#lance', as: 'lance_sauve'

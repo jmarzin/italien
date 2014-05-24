@@ -5,7 +5,7 @@ class QuestionsController < ApplicationController
   def lance
     session[:revision] = true
     if (rand*4).ceil > 3
-      redirect_to action: 'vocabulaire'
+      redirect_to action: 'conjugaison'
     else
       redirect_to action: 'vocabulaire'
     end
@@ -40,12 +40,46 @@ class QuestionsController < ApplicationController
     params[:attendu] = @mot.italien
   end
 
+    #GET/questions/conjugaison
+    def conjugaison
+      if current_user.admin
+        redirect_to verbes_path, notice: 'Vous ne pouvez pas réviser les conjugaisons'
+        return
+      end
+      session[:type] = 'conjugaison'
+      unless session.has_key?(:debut)
+        session[:debut] = Time.now.to_i
+        session[:bonnes_reponses],session[:mauvaises_reponses] = 0,0
+      end
+      if session[:erreurs_formes_traitees]
+        @forme = current_user.tirage_forme
+      else
+        @forme = current_user.err_forme_sess_prec(session[:debut])
+        unless @forme
+          @forme = current_user.tirage_forme
+          session[:erreurs_formes_traitees] = true
+        end
+      end
+      unless @forme
+        redirect_to parametres_edit_path, 'Les paramètres sont trop restrictifs'
+        return
+      end
+      params[:id] = @forme.id
+      params[:question] = Forme::FORMES[@forme.rang_forme][2]+' du verbe '+@forme.verbe.infinitif
+      params[:attendu] = @forme.italien
+    end
+
   # POST/questions/verification
   def verification
 
     if params[:reponse]
-      @objet = Mot.find(params[:id])
-      @score = @objet.scores_mots.where(user_id: current_user.id).first
+      if session[:type] == 'vocabulaire'
+        @objet = Mot.find(params[:id])
+        @score = @objet.scores_mots.find_by(user_id: current_user.id)
+      else
+        @objet = Forme.find(params[:id])
+        @score = @objet.scores_formes.find_by(user_id: current_user.id)
+      end
       params[:message] = Erreur.accepte?(params[:reponse],params[:attendu], @objet,current_user.id)
       if params[:message]
         session[:bonnes_reponses] += 1

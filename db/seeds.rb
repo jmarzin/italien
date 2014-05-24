@@ -5,9 +5,13 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+
+unless User.exists?
+  User.create!({:email => "jmarzin@gmail.com", :admin => true, :password => "51julie2", :password_confirmation => "51julie2" })
+end
+
 Mot.destroy_all
 ScoresMot.destroy_all
-User.create!({:email => "jmarzin@gmail.com", :admin => true, :password => "51julie2", :password_confirmation => "51julie2" })
 liste = [
     ["accouchement","un accouchement",8,"un parto"],
     ["accoucher","accoucher",8,"partorire"],
@@ -263,13 +267,77 @@ liste = [
     ["vivre","vivre ensemble",8,"convìvere"],
     ["voir","voir",8,"vedere"],
     ["vue","la vue",8,"la vista"],
-    ["vulgaire","vulgaire",8,"volgare"]
-]
+    ["vulgaire","vulgaire",8,"volgare"]]
 liste.each do |m|
   @m = Mot.create(mot_directeur: m[0], francais: m[1], italien: m[3])
   @m.save
   User.all.each do |u|
     u.scores_mots.build(user_id: u.id,mot_id: @m.id,compteur: m[2])
     u.save
+  end
+end
+
+Verbe.destroy_all
+Forme.destroy_all
+ScoresForme.destroy_all
+liste = [
+    ["amare",
+     [[0, "amo",8],
+      [1, "ami",8],
+      [2, "ama",8],
+      [3, "amiamo",8],
+      [4, "amate",8],
+      [5, "àmano",8],
+      [6, "amavo",8],
+      [7, "amavi",8],
+      [8, "amava",8],
+      [9, "amavamo",8],
+      [10, "amavate",8],
+      [11, "amàvano",8],
+      [12, "amai",1],
+      [13, "amasti",1],
+      [14, "amò",1],
+      [15, "amammo",1],
+      [16, "amaste",1],
+      [17, "amàrono",1],
+      [18, "amerò",8],
+      [19, "amerai",8],
+      [20, "amerà",8],
+      [21, "ameremo",8],
+      [22, "amerete",8],
+      [23, "ameranno",8],
+      [24, "ami",8],
+      [25, "ami",8],
+      [26, "ami",8],
+      [27, "amiamo",8],
+      [28, "amiate",8],
+      [29, "àmino",8],
+      [30, "amassi",2],
+      [31, "amassi",2],
+      [32, "amasse",2],
+      [33, "amàssimo",2],
+      [34, "amaste",2],
+      [35, "amàssero",2],
+      [36, "",0],
+      [37, "ama",8],
+      [38, "ami",8],
+      [39, "amiamo",8],
+      [40, "amate",8],
+      [41, "àmino",8],
+      [42, "amerei",8],
+      [43, "ameresti",8],
+      [44, "amerebbe",8],
+      [45, "ameremmo",8],
+      [46, "amereste",8],
+      [47, "amerébbero",8],
+      [48, "amando",8],
+      [49, "amato",8]]]]
+liste.each do |verbe|
+  @verbe = Verbe.create(infinitif: verbe[0])
+  verbe[1].each do |forme|
+    @forme = @verbe.formes.create(rang_forme: forme[0], italien: forme[1])
+    User.all.each do |user|
+      user.scores_formes.create(forme_id: @forme.id, compteur: forme[2])
+    end
   end
 end

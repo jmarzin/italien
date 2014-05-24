@@ -1,3 +1,4 @@
+liste = [
 ["accouchement","un accouchement",8,"un parto"],
 ["accoucher","accoucher",8,"partorire"],
 ["adolescence","une adolescence",8,"un'adolescenza"],
@@ -252,4 +253,4 @@
 ["vivre","vivre ensemble",8,"convìvere"],
 ["voir","voir",8,"vedere"],
 ["vue","la vue",8,"la vista"],
-["vulgaire","vulgaire",8,"volgare"],
+["vulgaire","vulgaire",8,"volgare"]]

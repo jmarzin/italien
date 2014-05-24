@@ -8,7 +8,7 @@
 
   .field
     = f.label :infinitif
-    = f.text_field :infinitif
+    = f.text_field :infinitif,:disabled => !(@peut_supprimer)
 
     -i = 0
 
@@ -32,7 +32,7 @@
           %tr
           -texte=Forme::FORMES[i][0]
           %td= formes_form.label :italien, if texte.end_with?('.s1') then texte[0..-4] else texte end
-        %td= formes_form.text_field :italien, size: 20, class: 'italien'
+        %td= formes_form.text_field :italien, size: 20, class: 'italien', :disabled => !(@peut_supprimer)
         =formes_form.hidden_field :rang_forme
         = formes_form.fields_for :scores_formes do |scores_formes|
           -if scores_formes.object.user_id == current_user.id
