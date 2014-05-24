@@ -7,30 +7,41 @@
       %ul
         - @parametre.errors.full_messages.each do |msg|
           %li= msg
+  %h2 Pour les mots
+  %table#par
+    %tr
+    .field
+      %td= f.label "Avec un nombre d'essais supérieur ou égal à"
+      %td= f.number_field :voc_compteur_min, class: 'compteur'
+    %tr
+    .field
+      %td= f.label 'Révisés pour la première fois à partir du'
+      %td= f.text_field :voc_revision_1_min, size: 5
+    %tr
+      %td Nombre de mots :
+      -if @voc_nb > 0
+        %td= @voc_nb
+      -else
+        %td#erreur= 0
 
-  .field
-    = f.label "Avec un nombre d'essais supérieur ou égal à"
-    = f.text_field :voc_compteur_min
-  .field
-    = f.label 'Révisé pour la première fois à partir du'
-    = f.text_field :voc_revision_1_min
-  %p="Nombre de mots : #{@voc_nb}"
+  %br
+  %h2 Pour les formes verbales
+  %table#par
+    %tr
+    .field
+      %td= f.label "Avec un nombre d'essais supérieur ou égal à"
+      %td= f.number_field :for_compteur_min, class: 'compteur'
+    %tr
+    .field
+      %td=f.label 'Révisées pour la première fois à partir du'
+      %td= f.text_field :for_revision_1_min, size: 5
+    %tr
+      %td Nombre de formes verbales :
+      -if @for_nb > 0
+        %td= @for_nb
+      -else
+        %td#erreur 0
   %br
   .actions
     = f.submit 'Enregistrer'
-
--#%h2 Conjugaison
-
-  -Compteur
-  =number_field_tag('conj_compteur_min',value = @conj_compteur_min)
-  Date de création
-  = select_date Date.parse(@conj_date_min), prefix: :conj_date_min
-  =hidden_field_tag 'conj_nb', value = @conj_nb
-  Nombre =
-  -if @conj_nb == 0
-    #erreur=@conj_nb
-  -else
-    =@conj_nb
-  %br
-  %br
 

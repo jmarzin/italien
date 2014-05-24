@@ -1,0 +1,10 @@
+=form_tag('ecrit')
+%h1 Sauvegarde des mots et des formes verbales
+
+=ScoresMot.where(user_id: current_user.id).count
+mots
+%br
+=ScoresForme.where(user_id: current_user.id).count
+formes verbales
+%br
+=button_tag 'Sauver', autofocus: true

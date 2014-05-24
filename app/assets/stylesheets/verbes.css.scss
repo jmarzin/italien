@@ -9,3 +9,25 @@ table#saisie_verbe {
     width: 95%;
   }
 }
+table#par {
+  input.compteur {
+    width: 20%;
+  }
+}
+@for $i from 1 through 3 {
+  table#verbe#{$i} {
+    border: 1px solid black;
+    width: 80%;
+
+    td {
+      text-align: center;
+    }
+    th {
+      width: 20%;
+
+      #mode {
+        width: 10em
+      }
+    }
+  }
+}

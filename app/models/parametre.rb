@@ -1,7 +1,9 @@
 class ParametreValidator < ActiveModel::Validator
   def validate(record)
-    if User.find(record.user_id).scores_mots.where("(date_rev_1 is null or date_rev_1 >= ?) and compteur >= ?",\
-      record.voc_revision_1_min,record.voc_compteur_min).count < 1
+    if (User.find(record.user_id).scores_mots.where("(date_rev_1 is null or date_rev_1 >= ?) and compteur >= ?",\
+      record.voc_revision_1_min,record.voc_compteur_min).count < 1) or\
+      (User.find(record.user_id).scores_formes.where("(date_rev_1 is null or date_rev_1 >= ?) and compteur >= ?",\
+      record.for_revision_1_min,record.for_compteur_min).count < 1)
         record.errors[:base] << 'Les critères sont trop contraignants'
     end
   end

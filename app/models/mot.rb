@@ -25,4 +25,14 @@ class Mot < ActiveRecord::Base
   SUCCES = 0.5
   ECHEC = 2
 
+  def self.sauve(user_id)
+    liste = File.new('db/mots/liste_mots.txt',mode='w')
+    Mot.all.order(:mot_directeur).each do |v|
+      IO.write(liste,\
+        "[\""+v.mot_directeur.to_str+"\",\""+v.francais+"\","+\
+        v.scores_mots.where(user_id: user_id).first.compteur.to_s+",\""+v.italien+"\"],\n",liste.size)
+    end
+    true
+  end
+
 end

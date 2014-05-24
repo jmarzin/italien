@@ -65,7 +65,7 @@ class MotsController < ApplicationController
   def update
     respond_to do |format|
       if @mot.update(mot_params)
-        format.html { redirect_to @mot, notice: 'Mot was successfully updated.' }
+        format.html { redirect_to @mot, notice: 'Le mot a été mis à jour.' }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
@@ -80,7 +80,7 @@ class MotsController < ApplicationController
     if @peut_supprimer
       @mot.destroy
       respond_to do |format|
-        format.html { redirect_to mots_url }
+        format.html { redirect_to mots_url, notice: 'Le mot a été supprimé.' }
         format.json { head :no_content }
       end
     else
@@ -102,9 +102,11 @@ class MotsController < ApplicationController
         end
       end
     end
+
     def set_mot
       @mot = Mot.find(params[:id])
     end
+
     def prepare_user
       if user_signed_in?
         unless current_user.admin
@@ -114,9 +116,17 @@ class MotsController < ApplicationController
             end
             current_user.save
           end
+          if current_user.formes.empty?
+            User.where(admin: true).first.scores_formes.each do |sco|
+              current_user.scores_formes.build(forme_id: sco.forme_id, compteur: sco.compteur)
+            end
+            current_user.save
+          end
           if current_user.parametre == nil
             current_user.create_parametre(voc_compteur_min: 0, \
-              voc_revision_1_min: current_user.scores_mots.minimum('date_rev_1') || Time.now)
+              voc_revision_1_min: current_user.scores_mots.minimum('date_rev_1') || Time.now, \
+              for_compteur_min: 0, \
+              for_revision_1_min: current_user.scores_formes.minimum('date_rev_1') || Time.now)
           end
         end
       end

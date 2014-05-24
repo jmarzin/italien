@@ -7,6 +7,7 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 Mot.destroy_all
 ScoresMot.destroy_all
+User.create!({:email => "jmarzin@gmail.com", :admin => true, :password => "51julie2", :password_confirmation => "51julie2" })
 liste = [
     ["accouchement","un accouchement",8,"un parto"],
     ["accoucher","accoucher",8,"partorire"],

@@ -9,14 +9,11 @@ class VerbesController < ApplicationController
   # GET /verbes.json
   def index
     session[:page_v] = (params[:page_v] ||= session[:page_v])
-    if @peut_corriger and not @peut_supprimere
-      @verbes = Verbe.joins(formes: :scores_formes).where("user_id = ?",current_user.id).\
-        select("verbes.id, infinitif, verbes.created_at, verbes.updated_at, sum(compteur) as total_compteur").\
-        group("verbes.id","infinitif","verbes.created_at","verbes.updated_at").\
-        order(:infinitif).page params[:page_v]
-    else
-      @verbes = Verbe.order(:infinitif).page params[:page_v]
-    end
+
+    @verbes = Verbe.joins(formes: :scores_formes).where("user_id = ?",@user_eq_id).\
+      select("verbes.id, infinitif, verbes.created_at, verbes.updated_at, sum(compteur) as total_compteur").\
+      group("verbes.id","infinitif","verbes.created_at","verbes.updated_at").\
+      order(:infinitif).page params[:page_v]
   end
 
   # GET /verbes/1
@@ -27,13 +24,7 @@ class VerbesController < ApplicationController
   # GET /verbes/new
   def new
     if @peut_supprimer
-      @verbe = Verbe.new
-      Forme::FORMES.each_index do |rang|
-        @verbe.formes.build(rang_forme: rang)
-      end
-      @verbe.formes.each do |forme|
-        forme.scores_formes.build(user_id: current_user.id,compteur: Forme::MAX_ESSAIS)
-      end
+      @verbe = Verbe.new.init(current_user.id)
     else
       redirect_to verbes_path, notice: 'Vous ne pouvez pas créer un nouveau verbe'
     end
@@ -46,14 +37,7 @@ class VerbesController < ApplicationController
   # POST /verbes
   # POST /verbes.json
   def create
-    @verbe = Verbe.new(verbe_params)
-    formes_reduit = []
-    @verbe.formes.each do |f|
-      unless f.italien == ''
-        formes_reduit << f
-      end
-    end
-    @verbe.formes = formes_reduit
+    @verbe = Verbe.new(verbe_params).reduit(current_user.id)
 
     respond_to do |format|
       if @verbe.save
@@ -67,9 +51,9 @@ class VerbesController < ApplicationController
           end
         end
         format.html { redirect_to @verbe, notice: 'Le verbe a bien été créé.' }
-        format.json { render action: 'Voir', status: :created, location: @verbe }
+        format.json { render action: 'show', status: :created, location: @verbe }
       else
-        format.html { render action: 'New' }
+        format.html { render action: 'new' }
         format.json { render json: @verbe.errors, status: :unprocessable_entity }
       end
     end
@@ -79,8 +63,8 @@ class VerbesController < ApplicationController
   # PATCH/PUT /verbes/1.json
   def update
     respond_to do |format|
-      if @verbe.update(verbe_params)
-        format.html { redirect_to @verbe, notice: 'Verbe was successfully updated.' }
+      if @verbe.mise_a_jour(verbe_params,current_user.id)
+        format.html { redirect_to @verbe, notice: 'Le verbe a été mis à jour.' }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
@@ -92,10 +76,14 @@ class VerbesController < ApplicationController
   # DELETE /verbes/1
   # DELETE /verbes/1.json
   def destroy
-    @verbe.destroy
-    respond_to do |format|
-      format.html { redirect_to verbes_url }
-      format.json { head :no_content }
+    if @peut_supprimer
+      @verbe.destroy
+      respond_to do |format|
+        format.html { redirect_to verbes_url, notice: 'Le verbe a été supprimé.' }
+        format.json { head :no_content }
+      end
+    else
+      redirect_to verbes_path, notice: "Vous ne pouvez pas supprimer un verbe"
     end
   end
 
@@ -108,14 +96,19 @@ class VerbesController < ApplicationController
     def set_autorisations
       @peut_corriger = false
       @peut_supprimer = false
-        if user_signed_in?
-          if current_user.admin
-            @peut_corriger = true
-            @peut_supprimer = true
-          else
-            @peut_corriger = true
-          end
+      if user_signed_in?
+        if current_user.admin
+          @peut_corriger = true
+          @peut_supprimer = true
+        else
+          @peut_corriger = true
         end
+      end
+      if @peut_corriger and not @peut_supprimer
+        @user_eq_id = current_user.id
+      else
+        @user_eq_id = User.where(admin: true).first.id
+      end
     end
 
     def prepare_user

@@ -1,9 +1,6 @@
 %h1 Liste des verbes
 %p#notice= notice
--if user_signed_in?
-  -user_id = current_user.id
--else
-  -user_id = User.where(admin: true).first.id
+
 %table#verbe
   %tr
     %th Infinitif
@@ -29,5 +26,6 @@
         %td= link_to 'Supp', verbe, :method => :delete, :data => { :confirm => 'Supprimer ?' }
 
 %br
-
-= link_to 'Nouveau verbe', new_verbe_path
+= paginate @verbes
+-if @peut_supprimer
+  = link_to 'Nouveau', new_verbe_path

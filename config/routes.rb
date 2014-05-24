@@ -3,6 +3,8 @@ Rails.application.routes.draw do
   get 'questions/vocabulaire'
   post 'questions/verification'
   get 'questions', to: 'questions#lance', as: 'lance_questions'
+  get 'sauve', to: 'sauve#lance', as: 'lance_sauve'
+  post 'ecrit', to: 'sauve#ecrit', as: 'sauve_mot_verbe'
 
   resources :parametres, only: [:edit, :update]
 

@@ -13,19 +13,35 @@
     -i = 0
 
     %table#saisie_verbe
-
+      %tr
+        %th
+        %th 1ère p. sing.
+        %th
+        %th 2ème p. sing.
+        %th
+        %th 3ème p. sing.
+        %th
+        %th 1ère p. plur.
+        %th
+        %th 2ème p. plur.
+        %th
+        %th 3ème p. plur.
+      %tr
       = f.fields_for :formes do |formes_form|
-        -if i/6*6 == i
+        -if i/6*6 == i or i == 49
           %tr
-          %td= formes_form.label :italien, Forme::FORMES[i][0]
+          -texte=Forme::FORMES[i][0]
+          %td= formes_form.label :italien, if texte.end_with?('.s1') then texte[0..-4] else texte end
         %td= formes_form.text_field :italien, size: 20, class: 'italien'
         =formes_form.hidden_field :rang_forme
         = formes_form.fields_for :scores_formes do |scores_formes|
-          %td= scores_formes.number_field :compteur, class: 'compteur'
-          =scores_formes.hidden_field :user_id
+          -if scores_formes.object.user_id == current_user.id
+            %td= scores_formes.number_field :compteur, class: 'compteur'
+            =scores_formes.hidden_field :user_id
         -i+=1
+
 
   %br
 
   .actions
-    = f.submit 'Save'
+    = f.submit 'Enregistrer'
