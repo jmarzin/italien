@@ -11,20 +11,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140525082053) do
+ActiveRecord::Schema.define(version: 20140525172406) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "erreurs", force: true do |t|
-    t.string   "code"
     t.string   "attendu"
     t.string   "reponse"
     t.integer  "user_id"
-    t.integer  "mot_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "forme_id"
     t.integer  "en_erreur_id"
     t.string   "en_erreur_type"
   end
