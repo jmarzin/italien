@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140524131933) do
+ActiveRecord::Schema.define(version: 20140525082053) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,7 +25,11 @@ ActiveRecord::Schema.define(version: 20140524131933) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "forme_id"
+    t.integer  "en_erreur_id"
+    t.string   "en_erreur_type"
   end
+
+  add_index "erreurs", ["en_erreur_id", "en_erreur_type"], name: "index_erreurs_on_en_erreur_id_and_en_erreur_type", using: :btree
 
   create_table "formes", force: true do |t|
     t.integer  "rang_forme"

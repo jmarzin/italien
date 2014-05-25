@@ -27,24 +27,14 @@ class User < ActiveRecord::Base
   has_many :scores_formes
   has_many :formes, through: :scores_formes
 
-  def err_mot_sess_prec(date)
-    erreur = self.erreurs.where("mot_id is not null and created_at < ?",Time.at(date)).first
-    if not erreur
+  def err_sess_prec(date,class_objet)
+    une_erreur = self.erreurs.where("en_erreur_type = ? and created_at < ?",class_objet,Time.at(date)).first
+    if not une_erreur
       return false
     end
-    @mot = Mot.find(erreur.mot_id)
-    erreur.destroy
-    @mot
-  end
-
-  def err_forme_sess_prec(date)
-    erreur = self.erreurs.where("forme_id is not null and created_at < ?",Time.at(date)).first
-    if not erreur
-      return false
-    end
-    @forme = Forme.find(erreur.forme_id)
-    erreur.destroy
-    @forme
+    @objet = class_objet.find(une_erreur.en_erreur_id)
+    une_erreur.destroy
+    @objet
   end
 
   def stats(bonnes, mauvaises)

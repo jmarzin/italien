@@ -25,7 +25,7 @@ class QuestionsController < ApplicationController
     if session[:erreurs_mots_traitees]
       @mot = current_user.tirage_mot
     else
-      @mot = current_user.err_mot_sess_prec(session[:debut])
+      @mot = current_user.err_sess_prec(session[:debut],Mot)
       unless @mot
         @mot = current_user.tirage_mot
         session[:erreurs_mots_traitees] = true
@@ -54,7 +54,7 @@ class QuestionsController < ApplicationController
       if session[:erreurs_formes_traitees]
         @forme = current_user.tirage_forme
       else
-        @forme = current_user.err_forme_sess_prec(session[:debut])
+        @forme = current_user.err_sess_prec(session[:debut],Forme)
         unless @forme
           @forme = current_user.tirage_forme
           session[:erreurs_formes_traitees] = true
@@ -98,4 +98,3 @@ class QuestionsController < ApplicationController
     end
   end
 end
-

@@ -1,12 +1,10 @@
 class Forme < ActiveRecord::Base
-#  validates :rang_forme, presence: {message: 'Le rang de la forme est obligatoire'}
-#  validates :italien, presence: {message: 'La forme en italien est obligatoire' }
 
   belongs_to :verbe
 
   has_many :scores_formes, dependent: :destroy
   accepts_nested_attributes_for :scores_formes
-  has_many :erreurs, dependent: :destroy
+  has_many :erreurs, as: :en_erreur, dependent: :destroy
   has_many :users, through: :scores_formes
 
   SUCCES = 0.5
@@ -64,6 +62,5 @@ class Forme < ActiveRecord::Base
 ['ger','','gérondif',8],
 ['ppas','','participe passé',8]
   ]
-
 
 end

@@ -8,12 +8,12 @@ class VerbesController < ApplicationController
   # GET /verbes
   # GET /verbes.json
   def index
-    session[:page_v] = (params[:page_v] ||= session[:page_v])
+    session[:page_v] = (params[:page] ||= session[:page_v])
 
     @verbes = Verbe.joins(formes: :scores_formes).where("user_id = ?",@user_eq_id).\
       select("verbes.id, infinitif, verbes.created_at, verbes.updated_at, sum(compteur) as total_compteur").\
       group("verbes.id","infinitif","verbes.created_at","verbes.updated_at").\
-      order(:infinitif).page params[:page_v]
+      order(:infinitif).page params[:page]
   end
 
   # GET /verbes/1

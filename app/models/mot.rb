@@ -1,9 +1,18 @@
 class Mot < ActiveRecord::Base
 
+  has_many :scores_mots, dependent: :destroy
+  accepts_nested_attributes_for :scores_mots
+  has_many :erreurs, as: :en_erreur, dependent: :destroy
+  has_many :users, through: :scores_mots
+
   validates :mot_directeur, presence: {message: 'Le mot directeur est obligatoire'}
   validates :francais, presence: {message: 'Le mot ou expression en français est obligatoire'}
   validates :francais, uniqueness: {message: 'Le mot existe déjà' }
   validates :italien, presence: {message: 'La traduction italienne est obligatoire'}
+
+  MAX_ESSAIS = 8
+  SUCCES = 0.5
+  ECHEC = 2
 
   def update(mot_params)
     mot_directeur = mot_params['mot_directeur']
@@ -14,16 +23,6 @@ class Mot < ActiveRecord::Base
     score.save
     self.save
   end
-
-  has_many :scores_mots, dependent: :destroy
-  accepts_nested_attributes_for :scores_mots
-  has_many :erreurs, dependent: :destroy
-  has_many :users, through: :scores_mots
-
-
-  MAX_ESSAIS = 8
-  SUCCES = 0.5
-  ECHEC = 2
 
   def self.sauve(user_id)
     liste = File.new('db/mots/liste_mots.txt',mode='w')

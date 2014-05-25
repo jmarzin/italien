@@ -1,12 +1,13 @@
 class Verbe < ActiveRecord::Base
-  validates :infinitif, presence: {message: "L'infinitif est obligatoire"}
-  validates :infinitif, uniqueness: {message: 'Le verbe existe déjà' }
 
   has_many :formes, -> { order "rang_forme" }, dependent: :destroy
   accepts_nested_attributes_for :formes
   has_many :scores_formes, through: :formes, dependent: :destroy
   accepts_nested_attributes_for :scores_formes
   has_many :erreurs, through: :formes, dependent: :destroy
+
+  validates :infinitif, presence: {message: "L'infinitif est obligatoire"}
+  validates :infinitif, uniqueness: {message: 'Le verbe existe déjà' }
 
   def init(current_user_id)
     Forme::FORMES.each_index do |rang|
