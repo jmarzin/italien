@@ -4,7 +4,7 @@ class QuestionsController < ApplicationController
   # GET/questions/lance
   def lance
     session[:revision] = true
-    if (rand*4).ceil > 3
+    if rand(4) > 2
       redirect_to action: 'conjugaison'
     else
       redirect_to action: 'vocabulaire'
@@ -21,7 +21,12 @@ class QuestionsController < ApplicationController
     unless session.has_key?(:debut)
       session[:debut] = Time.now.to_i
       session[:bonnes_reponses],session[:mauvaises_reponses] = 0,0
+      @session = current_user.sessions.create(debut: Time.at(session[:debut]),\
+        fin: Time.now,bonnes_reponses: 0, mauvaises_reponses: 0)
+      session[:session_id]= @session.id
     end
+
+
     if session[:erreurs_mots_traitees]
       @mot = current_user.tirage_mot
     else
@@ -50,6 +55,9 @@ class QuestionsController < ApplicationController
       unless session.has_key?(:debut)
         session[:debut] = Time.now.to_i
         session[:bonnes_reponses],session[:mauvaises_reponses] = 0,0
+        @session = current_user.sessions.create(debut: Time.at(session[:debut]),\
+        fin: Time.now,bonnes_reponses: 0, mauvaises_reponses: 0)
+        session[:session_id]= @session.id
       end
       if session[:erreurs_formes_traitees]
         @forme = current_user.tirage_forme
@@ -87,6 +95,11 @@ class QuestionsController < ApplicationController
         session[:mauvaises_reponses] += 1
       end
       @score.score(params[:message]).save
+      @session = Session.find(session[:session_id])
+      @session.fin = Time.now
+      @session.bonnes_reponses = session[:bonnes_reponses]
+      @session.mauvaises_reponses = session[:mauvaises_reponses]
+      @session.save!
       render action: session[:type]
     else
       if session[:revision] then

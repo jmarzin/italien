@@ -15,9 +15,9 @@ class Mot < ActiveRecord::Base
   ECHEC = 2
 
   def update(mot_params)
-    mot_directeur = mot_params['mot_directeur']
-    francais = mot_params['francais']
-    italien = mot_params['italien']
+    self.mot_directeur = mot_params['mot_directeur']
+    self.francais = mot_params['francais']
+    self.italien = mot_params['italien']
     score = scores_mots.where(user_id: mot_params[:scores_mots_attributes]['0']['user_id']).first
     score.compteur = mot_params[:scores_mots_attributes]['0']['compteur']
     score.save

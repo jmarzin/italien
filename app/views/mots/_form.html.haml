@@ -8,7 +8,7 @@
 
   .field
     = f.label :mot_directeur
-    = f.text_field :mot_directeur, :disabled => !(@peut_supprimer)
+    = f.text_field :mot_directeur, :disabled => !(@peut_supprimer), :autofocus => @peut_supprimer
   .field
     = f.label :francais
     = f.text_field :francais, :disabled => !(@peut_supprimer)
@@ -21,6 +21,6 @@
     = f.fields_for :scores_mots, scores_mot do |scores_mots_form|
       = scores_mots_form.hidden_field :user_id
       = scores_mots_form.label :compteur
-      = scores_mots_form.number_field :compteur
+      = scores_mots_form.number_field :compteur, autofocus: !(@peut_supprimer)
   .actions
     = f.submit 'Enregistrer'

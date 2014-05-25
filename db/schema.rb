@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140525172406) do
+ActiveRecord::Schema.define(version: 20140525202402) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -79,6 +79,18 @@ ActiveRecord::Schema.define(version: 20140525172406) do
   end
 
   add_index "scores_mots", ["user_id", "mot_id"], name: "index_scores_mots_on_user_id_and_mot_id", unique: true, using: :btree
+
+  create_table "sessions", force: true do |t|
+    t.datetime "debut"
+    t.datetime "fin"
+    t.integer  "bonnes_reponses"
+    t.integer  "mauvaises_reponses"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "user_id"
+  end
+
+  add_index "sessions", ["user_id"], name: "index_sessions_on_user_id", using: :btree
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "",    null: false

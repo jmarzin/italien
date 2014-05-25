@@ -26,6 +26,7 @@ class User < ActiveRecord::Base
   has_one  :parametre
   has_many :scores_formes
   has_many :formes, through: :scores_formes
+  has_many :sessions
 
   def err_sess_prec(date,class_objet)
     une_erreur = self.erreurs.where("en_erreur_type = ? and created_at < ?",class_objet,Time.at(date)).first
