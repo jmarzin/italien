@@ -1,3 +1,26 @@
 // Place all the styles related to the Mots controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+table#lettres {
+  td {
+    font-size: x-large;
+  }
+}
+table#lettres, #mots {
+  width: 70%;
+  th {
+    text-align: left;
+  }
+  #m_d {
+    width: 15%;
+  }
+  #f {
+    width: 25%;
+  }
+  #i {
+    width: 25%;
+  }
+  #c {
+    width: 5%;
+  }
+}

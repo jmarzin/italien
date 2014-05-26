@@ -4,19 +4,22 @@
   -user_id = current_user.id
 -else
   -user_id = User.where(admin: true).first.id
-%table#mot
+%table#lettres
   %tr
-    %th Mot directeur
-    %th Francais
-    %th Italien
-    %th Compteur
-    %th Créé le
-    %th Modifié le
-    %th
-    -if @peut_corriger
-      %th
-    -if @peut_supprimer
-      %th
+    -('a'..'z').each do |lettre|
+      %td=link_to lettre,mots_path(lettres: lettre)
+%br
+%table#mots
+  %tr
+    %th#m_d Mot directeur
+    %th#f Francais
+    %th#i Italien
+    %th#c Compteur
+    %th#c_l Créé le
+    %th#m_l Modifié le
+    %th#lien
+    %th#lien
+    %th#lien
 
   - @mots.each do |mot|
     %tr
@@ -29,8 +32,12 @@
       %td= link_to 'Voir', mot
       -if @peut_corriger
         %td= link_to 'Corr', edit_mot_path(mot)
+      -else
+        %tdn
       -if @peut_supprimer
         %td= link_to 'Supp', mot, :method => :delete, :data => { :confirm => 'Supprimer ?' }
+      -else
+        %td
 
 %br
 = paginate @mots

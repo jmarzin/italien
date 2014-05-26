@@ -9,6 +9,17 @@ class MotsController < ApplicationController
   # GET /mots
   # GET /mots.json
   def index
+    if params[:lettres] and params[:lettres].match('^\w*$')
+      lettres,params[:lettres] = params[:lettres].downcase,nil
+      if @peut_modifier and not @peut_supprimer
+        params[:page] = (current_user.mots.merge(ScoresMot.where("(date_rev_1 is null or date_rev_1 >= ?) and compteur >= ? and mot_directeur < ?",\
+          current_user.parametre.voc_revision_1_min,\
+          current_user.parametre.voc_compteur_min,\
+          lettres)).count / Kaminari.config.default_per_page).ceil
+      else
+        params[:page] =(Mot.where("mot_directeur < ?",lettres).count/Kaminari.config.default_per_page).floor+1
+      end
+    end
     session[:page_m] = (params[:page] ||= session[:page_m])
     if @peut_corriger and not @peut_supprimer
       @mots = current_user.mots.merge(ScoresMot.where("(date_rev_1 is null or date_rev_1 >= ?) and compteur >= ?",\

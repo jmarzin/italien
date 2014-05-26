@@ -23,9 +23,8 @@ class QuestionsController < ApplicationController
       session[:bonnes_reponses],session[:mauvaises_reponses] = 0,0
       @session = current_user.sessions.create(debut: Time.at(session[:debut]),\
         fin: Time.now,bonnes_reponses: 0, mauvaises_reponses: 0)
-      session[:session_id]= @session.id
+      session[:ma_session_id]= @session.id
     end
-
 
     if session[:erreurs_mots_traitees]
       @mot = current_user.tirage_mot
@@ -57,7 +56,7 @@ class QuestionsController < ApplicationController
         session[:bonnes_reponses],session[:mauvaises_reponses] = 0,0
         @session = current_user.sessions.create(debut: Time.at(session[:debut]),\
         fin: Time.now,bonnes_reponses: 0, mauvaises_reponses: 0)
-        session[:session_id]= @session.id
+        session[:ma_session_id]= @session.id
       end
       if session[:erreurs_formes_traitees]
         @forme = current_user.tirage_forme
@@ -95,7 +94,7 @@ class QuestionsController < ApplicationController
         session[:mauvaises_reponses] += 1
       end
       @score.score(params[:message]).save
-      @session = Session.find(session[:session_id])
+      @session = Session.find(session[:ma_session_id].to_i)
       @session.fin = Time.now
       @session.bonnes_reponses = session[:bonnes_reponses]
       @session.mauvaises_reponses = session[:mauvaises_reponses]
