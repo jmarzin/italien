@@ -16,7 +16,7 @@ class Erreur < ActiveRecord::Base
         resultat = resultat && attendus.include?(rep)
       end
     end
-    unless resultat
+    unless resultat or objet.erreurs.find_by(user_id: user_id)
       objet.erreurs.create!(user_id: user_id,attendu: attendu, reponse: reponse)
     end
     resultat

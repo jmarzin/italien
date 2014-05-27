@@ -36,7 +36,7 @@ class QuestionsController < ApplicationController
       end
     end
     unless @mot
-      redirect_to parametres_edit_path, 'Les paramètres sont trop restrictifs'
+      redirect_to edit_parametre_path(current_user.parametre), notice: 'Les paramètres sont trop restrictifs'
       return
     end
     params[:id] = @mot.id
@@ -68,7 +68,7 @@ class QuestionsController < ApplicationController
         end
       end
       unless @forme
-        redirect_to parametres_edit_path, 'Les paramètres sont trop restrictifs'
+        redirect_to edit_parametre_path(current_user.parametre), notice: 'Les paramètres sont trop restrictifs'
         return
       end
       params[:id] = @forme.id
