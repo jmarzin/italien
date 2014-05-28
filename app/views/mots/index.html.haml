@@ -24,8 +24,8 @@
   - @mots.each do |mot|
     %tr
       %td= mot.mot_directeur
-      %td= mot.francais
-      %td= mot.italien
+      %td= if mot.francais.size <= 30 then mot.francais else mot.francais[0..26]+'...' end
+      %td= if mot.italien.size <= 30 then mot.italien else mot.italien[0..26]+'...' end
       %td= mot.scores_mots.where(user_id: user_id, mot_id: mot.id).first.compteur
       %td= mot.created_at.strftime('%Y/%m/%d')
       %td= mot.updated_at.strftime('%Y/%m/%d')

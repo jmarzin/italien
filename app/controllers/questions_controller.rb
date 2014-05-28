@@ -13,68 +13,15 @@ class QuestionsController < ApplicationController
 
   #GET/questions/vocabulaire
   def vocabulaire
-    if current_user.admin
-      redirect_to mots_path, notice: 'Vous ne pouvez pas réviser le vocabulaire'
-      return
-    end
-    session[:type] = 'vocabulaire'
-    unless session.has_key?(:debut)
-      session[:debut] = Time.now.to_i
-      session[:bonnes_reponses],session[:mauvaises_reponses] = 0,0
-      @session = current_user.sessions.create(debut: Time.at(session[:debut]),\
-        fin: Time.now,bonnes_reponses: 0, mauvaises_reponses: 0)
-      session[:ma_session_id]= @session.id
-    end
-
-    if session[:erreurs_mots_traitees]
-      @mot = current_user.tirage_mot
-    else
-      @mot = current_user.err_sess_prec(session[:debut],Mot)
-      unless @mot
-        @mot = current_user.tirage_mot
-        session[:erreurs_mots_traitees] = true
-      end
-    end
-    unless @mot
-      redirect_to edit_parametre_path(current_user.parametre), notice: 'Les paramètres sont trop restrictifs'
-      return
-    end
-    params[:id] = @mot.id
-    params[:question] = @mot.francais
-    params[:attendu] = @mot.italien
+    init_session(mots_path, 'le vocabulaire')
+    construit_question(Mot)
   end
 
     #GET/questions/conjugaison
-    def conjugaison
-      if current_user.admin
-        redirect_to verbes_path, notice: 'Vous ne pouvez pas réviser les conjugaisons'
-        return
-      end
-      session[:type] = 'conjugaison'
-      unless session.has_key?(:debut)
-        session[:debut] = Time.now.to_i
-        session[:bonnes_reponses],session[:mauvaises_reponses] = 0,0
-        @session = current_user.sessions.create(debut: Time.at(session[:debut]),\
-        fin: Time.now,bonnes_reponses: 0, mauvaises_reponses: 0)
-        session[:ma_session_id]= @session.id
-      end
-      if session[:erreurs_formes_traitees]
-        @forme = current_user.tirage_forme
-      else
-        @forme = current_user.err_sess_prec(session[:debut],Forme)
-        unless @forme
-          @forme = current_user.tirage_forme
-          session[:erreurs_formes_traitees] = true
-        end
-      end
-      unless @forme
-        redirect_to edit_parametre_path(current_user.parametre), notice: 'Les paramètres sont trop restrictifs'
-        return
-      end
-      params[:id] = @forme.id
-      params[:question] = Forme::FORMES[@forme.rang_forme][2]+' du verbe '+@forme.verbe.infinitif
-      params[:attendu] = @forme.italien
-    end
+  def conjugaison
+    init_session(verbes_path,'les conjugaisons')
+    construit_question(Forme)
+  end
 
   # POST/questions/verification
   def verification
@@ -109,4 +56,42 @@ class QuestionsController < ApplicationController
       end
     end
   end
+
+  private
+
+  def init_session(path,text)
+    if current_user.admin
+      redirect_to path, notice: 'Vous ne pouvez pas réviser '+text
+      return
+    end
+    session[:type] = text.split[1].singularize
+    unless session.has_key?(:debut)
+      session[:debut] = Time.now.to_i
+      session[:bonnes_reponses],session[:mauvaises_reponses] = 0,0
+      @session = current_user.sessions.create(debut: Time.at(session[:debut]),\
+        fin: Time.now,bonnes_reponses: 0, mauvaises_reponses: 0)
+      session[:ma_session_id]= @session.id
+    end
+  end
+
+  def construit_question(classe)
+    erreurs_traitees = 'erreurs_'+classe.name.downcase.pluralize+'_traitees'
+    if session[erreurs_traitees]
+      @objet = current_user.send('tirage_'+classe.name.downcase)
+    else
+      @objet = current_user.err_sess_prec(session[:debut],classe)
+      unless @objet
+        @objet = current_user.send('tirage_'+classe.name.downcase)
+        session[erreurs_traitees] = true
+      end
+    end
+    unless @objet
+      redirect_to edit_parametre_path(current_user.parametre), notice: 'Les paramètres sont trop restrictifs'
+      return
+    end
+    params[:id] = @objet.id
+    params[:question] = @objet.question_en_francais
+    params[:attendu] = @objet.italien
+  end
+
 end

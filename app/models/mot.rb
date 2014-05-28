@@ -24,6 +24,10 @@ class Mot < ActiveRecord::Base
     self.save
   end
 
+  def question_en_francais
+    self.francais
+  end
+
   def self.sauve(user_id)
     liste = File.new('db/mots/liste_mots.txt',mode='w')
     IO.write(liste,"liste = [\n")

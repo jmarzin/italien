@@ -8,7 +8,7 @@
 
   .field
     = f.label :mot_directeur
-    = f.text_field :mot_directeur, :disabled => !(@peut_supprimer), :autofocus => @peut_supprimer
+    = f.text_field :mot_directeur, :autofocus => @peut_supprimer, :disabled => !(@peut_supprimer)
   .field
     = f.label :francais
     = f.text_field :francais, :disabled => !(@peut_supprimer)

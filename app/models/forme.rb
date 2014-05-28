@@ -63,4 +63,8 @@ class Forme < ActiveRecord::Base
 ['ppas','','participe passé',8]
   ]
 
+  def question_en_francais
+    Forme::FORMES[self.rang_forme][2]+' du verbe '+self.verbe.infinitif
+  end
+
 end

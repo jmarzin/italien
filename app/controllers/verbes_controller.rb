@@ -10,10 +10,15 @@ class VerbesController < ApplicationController
   def index
     session[:page_v] = (params[:page] ||= session[:page_v])
 
-    @verbes = Verbe.joins(formes: :scores_formes).where("user_id = ?",@user_eq_id).\
+    @verbes = Verbe.joins(formes: :scores_formes).where("user_id = ? and (date_rev_1 is null or date_rev_1 >= ?) and compteur >= ?",\
+    @user_eq_id,current_user.parametre.voc_revision_1_min,current_user.parametre.voc_compteur_min).\
       select("verbes.id, infinitif, verbes.created_at, verbes.updated_at, sum(compteur) as total_compteur").\
       group("verbes.id","infinitif","verbes.created_at","verbes.updated_at").\
       order(:infinitif).page params[:page]
+
+#    @mots = current_user.mots.merge(ScoresMot.where("(date_rev_1 is null or date_rev_1 >= ?) and compteur >= ?",\
+#        current_user.parametre.voc_revision_1_min,current_user.parametre.voc_compteur_min)).order(:mot_directeur).page params[:page]
+
   end
 
   # GET /verbes/1
