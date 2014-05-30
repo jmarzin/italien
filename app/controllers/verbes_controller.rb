@@ -10,11 +10,18 @@ class VerbesController < ApplicationController
   def index
     session[:page_v] = (params[:page] ||= session[:page_v])
 
-    @verbes = Verbe.joins(formes: :scores_formes).where("user_id = ? and (date_rev_1 is null or date_rev_1 >= ?) and compteur >= ?",\
-    @user_eq_id,current_user.parametre.voc_revision_1_min,current_user.parametre.voc_compteur_min).\
-      select("verbes.id, infinitif, verbes.created_at, verbes.updated_at, sum(compteur) as total_compteur").\
-      group("verbes.id","infinitif","verbes.created_at","verbes.updated_at").\
-      order(:infinitif).page params[:page]
+    if @peut_supprimer
+      @verbes = Verbe.joins(formes: :scores_formes).where("user_id = ?",current_user.id).\
+        select("verbes.id, infinitif, verbes.created_at, verbes.updated_at, sum(compteur) as total_compteur").\
+        group("verbes.id","infinitif","verbes.created_at","verbes.updated_at").\
+        order(:infinitif).page params[:page]
+    else
+      @verbes = Verbe.joins(formes: :scores_formes).where("user_id = ? and (date_rev_1 is null or date_rev_1 >= ?) and compteur >= ?",\
+      @user_eq_id,current_user.parametre.for_revision_1_min,current_user.parametre.for_compteur_min).\
+        select("verbes.id, infinitif, verbes.created_at, verbes.updated_at, sum(compteur) as total_compteur").\
+        group("verbes.id","infinitif","verbes.created_at","verbes.updated_at").\
+        order(:infinitif).page params[:page]
+    end
 
 #    @mots = current_user.mots.merge(ScoresMot.where("(date_rev_1 is null or date_rev_1 >= ?) and compteur >= ?",\
 #        current_user.parametre.voc_revision_1_min,current_user.parametre.voc_compteur_min)).order(:mot_directeur).page params[:page]
@@ -49,8 +56,10 @@ class VerbesController < ApplicationController
         User.all.each do |u|
           unless u.id == current_user.id
             @verbe.formes.each do |forme|
-              forme.scores_formes.each do |score_forme_admin|
-                u.scores_formes.create(forme_id: score_forme_admin.forme_id,compteur: score_forme_admin.compteur)
+              unless forme.italien == ''
+                forme.scores_formes.each do |score_forme_admin|
+                  u.scores_formes.create(forme_id: score_forme_admin.forme_id,compteur: score_forme_admin.compteur)
+                end
               end
             end
           end

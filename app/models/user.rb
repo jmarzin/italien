@@ -56,7 +56,7 @@ class User < ActiveRecord::Base
       return false
     end
     rang = (rand * scores_mots.where("(date_rev_1 is null or date_rev_1 >= ?) and compteur >= ?",\
-        parametre.voc_revision_1_min,parametre.voc_compteur_min).count).ceil
+        parametre.voc_revision_1_min,parametre.voc_compteur_min).sum(:compteur)).ceil
     unless rang > 0
       return false
     end
@@ -77,7 +77,7 @@ class User < ActiveRecord::Base
       return false
     end
     rang = (rand * scores_formes.where("(date_rev_1 is null or date_rev_1 >= ?) and compteur >= ?",\
-        parametre.for_revision_1_min,parametre.for_compteur_min).count).ceil
+        parametre.for_revision_1_min,parametre.for_compteur_min).sum(:compteur)).ceil
     unless rang > 0
       return false
     end

@@ -17,9 +17,9 @@
     -(0..5).each do |personne|
       -(0..3).each do |temps|
         -rang = temps * 6 + personne
-        -forme = @verbe.formes.where(rang_forme: rang).first
+        -forme = @verbe.formes.find_by(rang_forme: rang)
         -if forme and forme.italien != ''
-          %td=Forme::FORMES[rang][1]+' '+forme.italien+' ('+forme.scores_formes.where(user_id: @user_eq_id).first.compteur.to_s+')'
+          %td=Forme::FORMES[rang][1]+' '+forme.italien+' ('+forme.scores_formes.find_by(user_id: @user_eq_id).compteur.to_s+')'
         -else
           %td -
       %tr
@@ -36,9 +36,9 @@
     -(0..5).each do |personne|
       -(4..7).each do |temps|
         -rang = temps * 6 + personne
-        -forme = @verbe.formes.where(rang_forme: rang).first
+        -forme = @verbe.formes.find_by(rang_forme: rang)
         -if forme and forme.italien != ''
-          %td=Forme::FORMES[rang][1]+' '+forme.italien+' ('+forme.scores_formes.where(user_id: @user_eq_id).first.compteur.to_s+')'
+          %td=Forme::FORMES[rang][1]+' '+forme.italien+' ('+forme.scores_formes.find_by(user_id: @user_eq_id).compteur.to_s+')'
         -else
           %td -
       %tr
@@ -49,9 +49,9 @@
 
   %tr
     -(48..49).each do |rang|
-      -forme = @verbe.formes.where(rang_forme: rang).first
+      -forme = @verbe.formes.find_by(rang_forme: rang)
       -if forme and forme.italien != ''
-        %td=Forme::FORMES[rang][1]+' '+forme.italien+' ('+forme.scores_formes.where(user_id: @user_eq_id).first.compteur.to_s+')'
+        %td=Forme::FORMES[rang][1]+' '+forme.italien+' ('+forme.scores_formes.find_by(user_id: @user_eq_id).compteur.to_s+')'
       -else
         %td -
 = link_to 'Corriger', edit_verbe_path(@verbe)

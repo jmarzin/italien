@@ -34,10 +34,14 @@
           %td= formes_form.label :italien, if texte.end_with?('.s1') then texte[0..-4] else texte end
         %td= formes_form.text_field :italien, size: 20, class: 'italien', :disabled => !(@peut_supprimer)
         =formes_form.hidden_field :rang_forme
+        -aucune_ligne = true
         = formes_form.fields_for :scores_formes do |scores_formes|
           -if scores_formes.object.user_id == current_user.id
+            -aucune_ligne = false
             %td= scores_formes.number_field :compteur, class: 'compteur'
             =scores_formes.hidden_field :user_id
+        -if aucune_ligne
+          %td
         -i+=1
 
 
