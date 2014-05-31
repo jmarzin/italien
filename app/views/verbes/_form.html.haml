@@ -14,25 +14,29 @@
 
     %table#saisie_verbe
       %tr
-        %th
-        %th 1ère p. sing.
-        %th
-        %th 2ème p. sing.
-        %th
-        %th 3ème p. sing.
-        %th
-        %th 1ère p. plur.
-        %th
-        %th 2ème p. plur.
-        %th
-        %th 3ème p. plur.
+        %th#t
+        %th#p 1ère p. sing.
+        %th#c
+        %th#p 2ème p. sing.
+        %th#c
+        %th#p 3ème p. sing.
+        %th#c
+        %th#p 1ère p. plur.
+        %th#c
+        %th#p 2ème p. plur.
+        %th#c
+        %th#p 3ème p. plur.
+        %th#c
       %tr
       = f.fields_for :formes do |formes_form|
         -if i/6*6 == i or i == 49
-          %tr
+          %tr{class: "#{cycle('pair','impair')}"}
           -texte=Forme::FORMES[i][0]
           %td= formes_form.label :italien, if texte.end_with?('.s1') then texte[0..-4] else texte end
-        %td= formes_form.text_field :italien, size: 20, class: 'italien', :disabled => !(@peut_supprimer)
+        -if @peut_supprimer or formes_form.object.italien != ''
+          %td= formes_form.text_field :italien, size: 20, class: 'italien', :disabled => !(@peut_supprimer)
+        -else
+          %td.italien
         =formes_form.hidden_field :rang_forme
         -aucune_ligne = true
         = formes_form.fields_for :scores_formes do |scores_formes|
@@ -41,7 +45,7 @@
             %td= scores_formes.number_field :compteur, class: 'compteur'
             =scores_formes.hidden_field :user_id
         -if aucune_ligne
-          %td
+          %td.compteur
         -i+=1
 
 

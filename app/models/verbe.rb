@@ -31,24 +31,26 @@ class Verbe < ActiveRecord::Base
   end
 
   def mise_a_jour(vp,user_id)
+    @admin = User.find_by(id: user_id).admin
     self.infinitif = vp['infinitif'] if vp['infinitif']
     vp['formes_attributes'].each do |fa|
-      fo = self.formes.where(rang_forme: fa[1]['rang_forme'].to_i).first
+      fo = self.formes.find_by(rang_forme: fa[1]['rang_forme'].to_i)
       if fa[1]['italien'] == ''
-        if fo.italien == ''
-          fo.scores_formes.where(user_id: user_id).first.compteur = 0
-        else
-          fo.scores_formes.each do |sf|
-            sf.compteur = 0
-          end
+        unless fo.italien == ''
+          fo.scores_formes.destroy(fo.scores_formes.where("user_id <> ?",user_id))
         end
+        fo.scores_formes.find_by(user_id: user_id).compteur = 0
       else
-        if fo.italien == ''
-          fo.scores_formes.each do |sf|
-            sf.compteur = fa[1]['scores_formes_attributes'].first[1]['compteur'].to_i
+        if fo.italien == '' and @admin
+          User.all.each do |u|
+            unless u.id == user_id
+              fo.scores_formes.create(user_id: u.id)
+            end
+            fo.scores_formes.find_by(user_id: user_id).compteur = \
+                fa[1]['scores_formes_attributes'].first[1]['compteur'].to_i
           end
-        else
-          sf=fo.scores_formes.where(user_id: user_id).first
+        elsif fa[1]['scores_formes_attributes']
+          sf=fo.scores_formes.find_by(user_id: user_id)
           sf.compteur = fa[1]['scores_formes_attributes'].first[1]['compteur'].to_i
           sf.save!
         end
