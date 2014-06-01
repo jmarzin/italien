@@ -28,6 +28,18 @@ class User < ActiveRecord::Base
   has_many :formes, through: :scores_formes
   has_many :sessions
 
+  def init_tableau
+    parametre.tableau_ids = []
+    parametre.tableau_ids_will_change!
+    liste_scores_mots_a_reviser.each do |scores_mot|
+      (1..scores_mot.compteur).each do |i|
+        parametre.tableau_ids<<scores_mot.mot.id
+      end
+    end
+    parametre.save!
+  end
+
+
   def err_sess_prec(date,class_objet)
     une_erreur = self.erreurs.where("en_erreur_type = ? and created_at < ?",class_objet,Time.at(date)).first
     if not une_erreur
@@ -51,25 +63,32 @@ class User < ActiveRecord::Base
     texte
   end
 
+  def liste_scores_mots_a_reviser
+    scores_mots.where("(date_rev_1 is null or date_rev_1 >= ?) and compteur >= ?",\
+        parametre.voc_revision_1_min,parametre.voc_compteur_min)
+  end
+
   def tirage_mot
-    unless parametre
+    unless parametre and parametre.tableau_ids.size > 0
       return false
     end
-    rang = (rand * scores_mots.where("(date_rev_1 is null or date_rev_1 >= ?) and compteur >= ?",\
-        parametre.voc_revision_1_min,parametre.voc_compteur_min).sum(:compteur)).ceil
-    unless rang > 0
-      return false
-    end
-    mots.merge(ScoresMot.where("(date_rev_1 is null or date_rev_1 >= ?) and compteur >= ?",\
-        parametre.voc_revision_1_min,parametre.voc_compteur_min)).order(:mot_directeur).each do |m|
-      c = m.scores_mots.where(user_id: id).first.compteur
-      if c >= rang
-        return m
-      else
-        rang -= c
-      end
-    end
-    return false
+    Mot.find(parametre.tableau_ids[rand(parametre.tableau_ids.size)])
+
+#    rang = (rand * scores_mots.where("(date_rev_1 is null or date_rev_1 >= ?) and compteur >= ?",\
+#        parametre.voc_revision_1_min,parametre.voc_compteur_min).sum(:compteur)).ceil
+#    unless rang > 0
+#      return false
+#    end
+#    mots.merge(ScoresMot.where("(date_rev_1 is null or date_rev_1 >= ?) and compteur >= ?",\
+#        parametre.voc_revision_1_min,parametre.voc_compteur_min)).order(:mot_directeur).each do |m|
+#      c = m.scores_mots.where(user_id: id).first.compteur
+#      if c >= rang
+#        return m
+#      else
+#        rang -= c
+#      end
+#    end
+#    return false
   end
 
   def tirage_forme

@@ -71,6 +71,11 @@ class QuestionsController < ApplicationController
       @session = current_user.sessions.create(debut: Time.at(session[:debut]),\
         fin: Time.now,bonnes_reponses: 0, mauvaises_reponses: 0)
       session[:ma_session_id]= @session.id
+      session[:tableau_ok] = false
+    end
+    unless session[:tableau_ok]
+      current_user.init_tableau if path == mots_path
+      session[:tableau_ok] = true
     end
   end
 

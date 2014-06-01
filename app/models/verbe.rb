@@ -30,6 +30,12 @@ class Verbe < ActiveRecord::Base
     self
   end
 
+  def ajuste_compteur(fo,user_id,compteur)
+    @scores_forme = fo.scores_formes.find_by(user_id: user_id)
+    @scores_forme.compteur = compteur
+    @scores_forme.save!
+  end
+
   def mise_a_jour(vp,user_id)
     @admin = User.find_by(id: user_id).admin
     self.infinitif = vp['infinitif'] if vp['infinitif']
@@ -39,20 +45,17 @@ class Verbe < ActiveRecord::Base
         unless fo.italien == ''
           fo.scores_formes.destroy(fo.scores_formes.where("user_id <> ?",user_id))
         end
-        fo.scores_formes.find_by(user_id: user_id).compteur = 0
+        ajuste_compteur(fo,user_id,0)
       else
         if fo.italien == '' and @admin
           User.all.each do |u|
             unless u.id == user_id
               fo.scores_formes.create(user_id: u.id)
             end
-            fo.scores_formes.find_by(user_id: user_id).compteur = \
-                fa[1]['scores_formes_attributes'].first[1]['compteur'].to_i
+            ajuste_compteur(fo,u.id,fa[1]['scores_formes_attributes'].first[1]['compteur'].to_i)
           end
         elsif fa[1]['scores_formes_attributes']
-          sf=fo.scores_formes.find_by(user_id: user_id)
-          sf.compteur = fa[1]['scores_formes_attributes'].first[1]['compteur'].to_i
-          sf.save!
+          ajuste_compteur(fo,user_id,fa[1]['scores_formes_attributes'].first[1]['compteur'].to_i)
         end
       end
       fo.italien = fa[1]['italien'] if fa[1]['italien']
