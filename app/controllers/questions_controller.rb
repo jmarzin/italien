@@ -71,12 +71,18 @@ class QuestionsController < ApplicationController
       @session = current_user.sessions.create(debut: Time.at(session[:debut]),\
         fin: Time.now,bonnes_reponses: 0, mauvaises_reponses: 0)
       session[:ma_session_id]= @session.id
-      session[:tableau_ok] = false
+      session[:tableau_mots_ok] = false
+      session[:tableau_formes_ok] = false
     end
-    unless session[:tableau_ok]
-      current_user.init_tableau if path == mots_path
-      session[:tableau_ok] = true
+    unless session[:tableau_mots_ok]
+      current_user.init_tableau_mots if path == mots_path
+      session[:tableau_mots_ok] = true
     end
+    unless session[:tableau_formes_ok]
+      current_user.init_tableau_formes if path == verbes_path
+      session[:tableau_formes_ok] = true
+    end
+
   end
 
   def construit_question(classe)

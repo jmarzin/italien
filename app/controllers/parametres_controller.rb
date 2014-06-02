@@ -20,7 +20,8 @@ class ParametresController < ApplicationController
       if @parametre.update(parametre_params)
         session[:page_m] = 1
         session[:page_v] = 1
-        session[:tableau_ok] = false
+        session[:tableau_mots_ok] = false
+        session[:tableau_formes_ok] = false
         format.html { redirect_to edit_parametre_path(@parametre), notice: 'Les paramètres ont été mis à jour' }
         format.json { head :no_content }
       else

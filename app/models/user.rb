@@ -28,17 +28,27 @@ class User < ActiveRecord::Base
   has_many :formes, through: :scores_formes
   has_many :sessions
 
-  def init_tableau
-    parametre.tableau_ids = []
-    parametre.tableau_ids_will_change!
+  def init_tableau_mots
+    parametre.tableau_ids_mots = []
+    parametre.tableau_ids_mots_will_change!
     liste_scores_mots_a_reviser.each do |scores_mot|
       (1..scores_mot.compteur).each do |i|
-        parametre.tableau_ids<<scores_mot.mot.id
+        parametre.tableau_ids_mots<<scores_mot.mot.id
       end
     end
-    parametre.save!
+    parametre.save
   end
 
+  def init_tableau_formes
+    parametre.tableau_ids_formes = []
+    parametre.tableau_ids_formes_will_change!
+    liste_scores_formes_a_reviser.each do |scores_forme|
+      (1..scores_forme.compteur).each do |i|
+        parametre.tableau_ids_formes<<scores_forme.forme.id
+      end
+    end
+    parametre.save
+  end
 
   def err_sess_prec(date,class_objet)
     une_erreur = self.erreurs.where("en_erreur_type = ? and created_at < ?",class_objet,Time.at(date)).first
@@ -68,11 +78,16 @@ class User < ActiveRecord::Base
         parametre.voc_revision_1_min,parametre.voc_compteur_min)
   end
 
+  def liste_scores_formes_a_reviser
+    scores_formes.where("(date_rev_1 is null or date_rev_1 >= ?) and compteur >= ?",\
+        parametre.for_revision_1_min,parametre.for_compteur_min)
+  end
+
   def tirage_mot
-    unless parametre and parametre.tableau_ids.size > 0
+    unless parametre and parametre.tableau_ids_mots.size > 0
       return false
     end
-    Mot.find(parametre.tableau_ids[rand(parametre.tableau_ids.size)])
+    Mot.find(parametre.tableau_ids_mots[rand(parametre.tableau_ids_mots.size)])
 
 #    rang = (rand * scores_mots.where("(date_rev_1 is null or date_rev_1 >= ?) and compteur >= ?",\
 #        parametre.voc_revision_1_min,parametre.voc_compteur_min).sum(:compteur)).ceil
@@ -92,24 +107,29 @@ class User < ActiveRecord::Base
   end
 
   def tirage_forme
-    unless parametre
+    unless parametre and parametre.tableau_ids_formes.size > 0
       return false
     end
-    rang = (rand * scores_formes.where("(date_rev_1 is null or date_rev_1 >= ?) and compteur >= ?",\
-        parametre.for_revision_1_min,parametre.for_compteur_min).sum(:compteur)).ceil
-    unless rang > 0
-      return false
-    end
-    formes.merge(ScoresForme.where("(date_rev_1 is null or date_rev_1 >= ?) and compteur >= ?",\
-        parametre.for_revision_1_min,parametre.for_compteur_min)).each do |f|
-      c = f.scores_formes.where(user_id: id).first.compteur
-      if c >= rang
-        return f
-      else
-        rang -= c
-      end
-    end
-    return false
+    Forme.find(parametre.tableau_ids_formes[rand(parametre.tableau_ids_formes.size)])
+
+    # unless parametre
+    #   return false
+    # end
+    # rang = (rand * scores_formes.where("(date_rev_1 is null or date_rev_1 >= ?) and compteur >= ?",\
+    #     parametre.for_revision_1_min,parametre.for_compteur_min).sum(:compteur)).ceil
+    # unless rang > 0
+    #   return false
+    # end
+    # formes.merge(ScoresForme.where("(date_rev_1 is null or date_rev_1 >= ?) and compteur >= ?",\
+    #     parametre.for_revision_1_min,parametre.for_compteur_min)).each do |f|
+    #   c = f.scores_formes.where(user_id: id).first.compteur
+    #   if c >= rang
+    #     return f
+    #   else
+    #     rang -= c
+    #   end
+    # end
+    # return false
   end
 
 end

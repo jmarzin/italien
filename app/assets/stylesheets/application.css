@@ -27,4 +27,5 @@
 #bravo {
     font-weight: bold;
     color: darkgreen;
+    display: inline;
 }
