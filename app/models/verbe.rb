@@ -74,9 +74,9 @@ class Verbe < ActiveRecord::Base
           f.scores_formes.find_by(user_id: User.find_by(admin: true).id).compteur.to_s+"],\n"
       end
       IO.write(liste,texte,liste.size)
-      IO.write(liste,"],\n",liste.size-2)
+      IO.write(liste,"]],\n",liste.size-2)
     end
-    IO.write(liste,"]]\n",liste.size-2)
+    IO.write(liste,"]\n",liste.size-2)
     true
   end
 
