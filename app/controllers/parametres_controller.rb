@@ -8,10 +8,8 @@ class ParametresController < ApplicationController
       redirect_to mots_path, notice: "Vous ne pouvez pas paramètrer la révision"
     else
       @parametre = current_user.parametre
-      @voc_nb = current_user.scores_mots.where("(date_rev_1 is null or date_rev_1 >= ?) and compteur >= ?",\
-        @parametre.voc_revision_1_min,@parametre.voc_compteur_min).count
-      @for_nb = current_user.scores_formes.where("(date_rev_1 is null or date_rev_1 >= ?) and compteur >= ?",\
-        @parametre.for_revision_1_min,@parametre.for_compteur_min).count
+      @voc_nb = current_user.liste_scores_mots_a_reviser.count
+      @for_nb = current_user.liste_scores_formes_a_reviser.count
     end
   end
 
@@ -25,10 +23,8 @@ class ParametresController < ApplicationController
         format.html { redirect_to edit_parametre_path(@parametre), notice: 'Les paramètres ont été mis à jour' }
         format.json { head :no_content }
       else
-        @voc_nb = current_user.scores_mots.where("(date_rev_1 is null or date_rev_1 >= ?) and compteur >= ?",\
-        @parametre.voc_revision_1_min,@parametre.voc_compteur_min).count
-        @for_nb = current_user.scores_formes.where("(date_rev_1 is null or date_rev_1 >= ?) and compteur >= ?",\
-        @parametre.for_revision_1_min,@parametre.for_compteur_min).count
+        @voc_nb = current_user.liste_scores_mots_a_reviser.count
+        @for_nb = current_user.liste_scores_formes_a_reviser.count
         format.html { render action: 'edit' }
         format.json { render json: @mot.errors, status: :unprocessable_entity }
       end

@@ -7,9 +7,6 @@ class Forme < ActiveRecord::Base
   has_many :erreurs, as: :en_erreur, dependent: :destroy
   has_many :users, through: :scores_formes
 
-  SUCCES = 0.5
-  ECHEC = 2
-
   FORMES = [
 ['ind.pres.s1','Io','1ère personne singulier présent indicatif',8],
 ['ind.pres.s2','Tu','2ème personne singulier présent indicatif',8],

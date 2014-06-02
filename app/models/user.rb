@@ -28,6 +28,36 @@ class User < ActiveRecord::Base
   has_many :formes, through: :scores_formes
   has_many :sessions
 
+  def init_mots
+    User.find_by(admin: true).scores_mots.each do |sco|
+      current_user.scores_mots.build(mot_id: sco.mot_id, compteur: sco.compteur)
+    end
+    self.save
+  end
+
+  def init_formes
+    User.find_by(admin: true).scores_formes.each do |sco|
+      current_user.scores_formes.build(forme_id: sco.forme_id, compteur: sco.compteur)
+    end
+    self.save
+  end
+
+  def init_parametres
+    self.create_parametre(voc_compteur_min: 0, \
+              voc_revision_1_min: self.scores_mots.minimum('date_rev_1') || Time.now, \
+              for_compteur_min: 0, \
+              for_revision_1_min: self.scores_formes.minimum('date_rev_1') || Time.now)
+  end
+
+  def self.ajoute_mot_aux_utilisateurs(mot_id,compteur)
+    User.all.each do |u|
+      unless u.scores_mots.find_by(mot_id: mot_id)
+        u.scores_mots.build(mot_id: mot_id,compteur: compteur)
+        u.save
+      end
+    end
+  end
+
   def init_tableau_mots
     parametre.tableau_ids_mots = []
     parametre.tableau_ids_mots_will_change!
@@ -83,53 +113,11 @@ class User < ActiveRecord::Base
         parametre.for_revision_1_min,parametre.for_compteur_min)
   end
 
-  def tirage_mot
-    unless parametre and parametre.tableau_ids_mots.size > 0
+  def tirage(classe,tableau)
+    unless tableau.size > 0
       return false
     end
-    Mot.find(parametre.tableau_ids_mots[rand(parametre.tableau_ids_mots.size)])
-
-#    rang = (rand * scores_mots.where("(date_rev_1 is null or date_rev_1 >= ?) and compteur >= ?",\
-#        parametre.voc_revision_1_min,parametre.voc_compteur_min).sum(:compteur)).ceil
-#    unless rang > 0
-#      return false
-#    end
-#    mots.merge(ScoresMot.where("(date_rev_1 is null or date_rev_1 >= ?) and compteur >= ?",\
-#        parametre.voc_revision_1_min,parametre.voc_compteur_min)).order(:mot_directeur).each do |m|
-#      c = m.scores_mots.where(user_id: id).first.compteur
-#      if c >= rang
-#        return m
-#      else
-#        rang -= c
-#      end
-#    end
-#    return false
-  end
-
-  def tirage_forme
-    unless parametre and parametre.tableau_ids_formes.size > 0
-      return false
-    end
-    Forme.find(parametre.tableau_ids_formes[rand(parametre.tableau_ids_formes.size)])
-
-    # unless parametre
-    #   return false
-    # end
-    # rang = (rand * scores_formes.where("(date_rev_1 is null or date_rev_1 >= ?) and compteur >= ?",\
-    #     parametre.for_revision_1_min,parametre.for_compteur_min).sum(:compteur)).ceil
-    # unless rang > 0
-    #   return false
-    # end
-    # formes.merge(ScoresForme.where("(date_rev_1 is null or date_rev_1 >= ?) and compteur >= ?",\
-    #     parametre.for_revision_1_min,parametre.for_compteur_min)).each do |f|
-    #   c = f.scores_formes.where(user_id: id).first.compteur
-    #   if c >= rang
-    #     return f
-    #   else
-    #     rang -= c
-    #   end
-    # end
-    # return false
+    classe.find(tableau[rand(tableau.size)])
   end
 
 end

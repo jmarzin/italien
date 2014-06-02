@@ -38,7 +38,7 @@ class MotsController < ApplicationController
   def new
     if @peut_supprimer
       @mot = Mot.new
-      @mot.scores_mots.build(user_id: current_user.id,compteur: Mot::MAX_ESSAIS)
+      @mot.scores_mots.build(user_id: current_user.id,compteur: ScoresMot::MAX_ESSAIS)
     else
       redirect_to mots_path, notice: "Vous ne pouvez pas créer un nouveau mot"
     end
@@ -56,12 +56,7 @@ class MotsController < ApplicationController
     respond_to do |format|
       if @mot.save
         compteur = @mot.scores_mots[0].compteur
-        User.all.each do |u|
-          unless u.id == current_user.id
-            u.scores_mots.build(user_id: u.id,mot_id: @mot.id,compteur: compteur)
-            u.save
-          end
-        end
+        User.ajoute_mot_aux_utilisateurs(@mot.id, compteur)
         format.html { redirect_to @mot, notice: 'Le mot a été créé' }
         format.json { render action: 'show', status: :created, location: @mot }
       else
@@ -100,7 +95,7 @@ class MotsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
+
     def set_autorisations
       @peut_corriger = false
       @peut_supprimer = false
@@ -121,24 +116,9 @@ class MotsController < ApplicationController
     def prepare_user
       if user_signed_in?
         unless current_user.admin
-          if current_user.mots.empty?
-            User.where(admin: true).first.scores_mots.each do |sco|
-              current_user.scores_mots.build(mot_id: sco.mot_id, compteur: sco.compteur)
-            end
-            current_user.save
-          end
-          if current_user.formes.empty?
-            User.where(admin: true).first.scores_formes.each do |sco|
-              current_user.scores_formes.build(forme_id: sco.forme_id, compteur: sco.compteur)
-            end
-            current_user.save
-          end
-          if current_user.parametre == nil
-            current_user.create_parametre(voc_compteur_min: 0, \
-              voc_revision_1_min: current_user.scores_mots.minimum('date_rev_1') || Time.now, \
-              for_compteur_min: 0, \
-              for_revision_1_min: current_user.scores_formes.minimum('date_rev_1') || Time.now)
-          end
+          current_user.init_mots if current_user.mots.empty?
+          current_user.init_formes if current_user.formes.empty?
+          current_user.init_parametres unless current_user.parametre
         end
       end
     end

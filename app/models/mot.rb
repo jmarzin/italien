@@ -10,10 +10,6 @@ class Mot < ActiveRecord::Base
   validates :francais, uniqueness: {message: 'Le mot existe déjà' }
   validates :italien, presence: {message: 'La traduction italienne est obligatoire'}
 
-  MAX_ESSAIS = 8
-  SUCCES = 0.5
-  ECHEC = 2
-
   def update(mot_params)
     self.mot_directeur = mot_params['mot_directeur']
     self.francais = mot_params['francais']

@@ -88,11 +88,14 @@ class QuestionsController < ApplicationController
   def construit_question(classe)
     erreurs_traitees = 'erreurs_'+classe.name.downcase.pluralize+'_traitees'
     if session[erreurs_traitees]
-      @objet = current_user.send('tirage_'+classe.name.downcase)
+      @objet = current_user.tirage(classe,\
+          current_user.parametre.send('tableau_ids_'+classe.name.downcase.pluralize))
     else
       @objet = current_user.err_sess_prec(session[:debut],classe)
       unless @objet
-        @objet = current_user.send('tirage_'+classe.name.downcase)
+        @objet = current_user.tirage(classe,\
+          current_user.parametre.send('tableau_ids_'+classe.name.downcase.pluralize))\
+          if current_user.parametre
         session[erreurs_traitees] = true
       end
     end
