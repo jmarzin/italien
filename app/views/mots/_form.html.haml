@@ -8,13 +8,13 @@
 
   .field
     = f.label :mot_directeur
-    = f.text_field :mot_directeur, :autofocus => @peut_supprimer, :disabled => !(@peut_supprimer)
+    = f.text_field :mot_directeur, autocomplete: :off,:autofocus => @peut_supprimer, :disabled => !(@peut_supprimer)
   .field
     = f.label :francais
-    = f.text_field :francais, :disabled => !(@peut_supprimer)
+    = f.text_field :francais, autocomplete: :off,:disabled => !(@peut_supprimer)
   .field
     = f.label :italien
-    = f.text_field :italien, :disabled => !(@peut_supprimer)
+    = f.text_field :italien, autocomplete: :off,:disabled => !(@peut_supprimer)
   -coll = @mot.scores_mots.where(user_id: current_user.id)
   -if coll.empty? then coll=@mot.scores_mots end
   -coll.each do |scores_mot|

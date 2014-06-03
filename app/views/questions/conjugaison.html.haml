@@ -28,7 +28,7 @@
   %br
 %br
 %h1=params[:question]
-%h1=text_field_tag 'reponse', '', autofocus: true, disabled: params[:message] != nil
+%h1=text_field_tag 'reponse', '', autocomplete: :off,autofocus: true, disabled: params[:message] != nil
 
 -if params[:message] == nil
   =button_tag 'Vérifier'
