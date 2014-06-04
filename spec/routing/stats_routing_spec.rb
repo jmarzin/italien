@@ -1,11 +1,10 @@
 require "spec_helper"
 
-describe MotsController do
-  # describe "routing" do
-  #
-  #   it "routes to #index" do
-  #     get("/mots").should route_to("mots#index")
-  #   end
+describe StatsController do
+  describe "routing" do
+    it "routes to #affiche" do
+      get("/stats").should route_to("stats#affiche")
+    end
   #
   #   it "routes to #new" do
   #     get("/mots/new").should route_to("mots#new")
@@ -31,5 +30,5 @@ describe MotsController do
   #     delete("/mots/1").should route_to("mots#destroy", :id => "1")
   #   end
   #
-  # end
+  end
 end

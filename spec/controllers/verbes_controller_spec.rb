@@ -19,142 +19,142 @@ require 'spec_helper'
 # that an instance is receiving a specific message.
 
 describe VerbesController do
-
-  # This should return the minimal set of attributes required to create a valid
-  # Verbe. As you add validations to Verbe, be sure to
-  # adjust the attributes here as well.
-  let(:valid_attributes) { { "infinitif" => "MyString" } }
-
-  # This should return the minimal set of values that should be in the session
-  # in order to pass any filters (e.g. authentication) defined in
-  # VerbesController. Be sure to keep this updated too.
-  let(:valid_session) { {} }
-
-  describe "GET index" do
-    it "assigns all verbes as @verbes" do
-      verbe = Verbe.create! valid_attributes
-      get :index, {}, valid_session
-      assigns(:verbes).should eq([verbe])
-    end
-  end
-
-  describe "GET show" do
-    it "assigns the requested verbe as @verbe" do
-      verbe = Verbe.create! valid_attributes
-      get :show, {:id => verbe.to_param}, valid_session
-      assigns(:verbe).should eq(verbe)
-    end
-  end
-
-  describe "GET new" do
-    it "assigns a new verbe as @verbe" do
-      get :new, {}, valid_session
-      assigns(:verbe).should be_a_new(Verbe)
-    end
-  end
-
-  describe "GET edit" do
-    it "assigns the requested verbe as @verbe" do
-      verbe = Verbe.create! valid_attributes
-      get :edit, {:id => verbe.to_param}, valid_session
-      assigns(:verbe).should eq(verbe)
-    end
-  end
-
-  describe "POST create" do
-    describe "with valid params" do
-      it "creates a new Verbe" do
-        expect {
-          post :create, {:verbe => valid_attributes}, valid_session
-        }.to change(Verbe, :count).by(1)
-      end
-
-      it "assigns a newly created verbe as @verbe" do
-        post :create, {:verbe => valid_attributes}, valid_session
-        assigns(:verbe).should be_a(Verbe)
-        assigns(:verbe).should be_persisted
-      end
-
-      it "redirects to the created verbe" do
-        post :create, {:verbe => valid_attributes}, valid_session
-        response.should redirect_to(Verbe.last)
-      end
-    end
-
-    describe "with invalid params" do
-      it "assigns a newly created but unsaved verbe as @verbe" do
-        # Trigger the behavior that occurs when invalid params are submitted
-        Verbe.any_instance.stub(:save).and_return(false)
-        post :create, {:verbe => { "infinitif" => "invalid value" }}, valid_session
-        assigns(:verbe).should be_a_new(Verbe)
-      end
-
-      it "re-renders the 'new' template" do
-        # Trigger the behavior that occurs when invalid params are submitted
-        Verbe.any_instance.stub(:save).and_return(false)
-        post :create, {:verbe => { "infinitif" => "invalid value" }}, valid_session
-        response.should render_template("new")
-      end
-    end
-  end
-
-  describe "PUT update" do
-    describe "with valid params" do
-      it "updates the requested verbe" do
-        verbe = Verbe.create! valid_attributes
-        # Assuming there are no other verbes in the database, this
-        # specifies that the Verbe created on the previous line
-        # receives the :update_attributes message with whatever params are
-        # submitted in the request.
-        Verbe.any_instance.should_receive(:update).with({ "infinitif" => "MyString" })
-        put :update, {:id => verbe.to_param, :verbe => { "infinitif" => "MyString" }}, valid_session
-      end
-
-      it "assigns the requested verbe as @verbe" do
-        verbe = Verbe.create! valid_attributes
-        put :update, {:id => verbe.to_param, :verbe => valid_attributes}, valid_session
-        assigns(:verbe).should eq(verbe)
-      end
-
-      it "redirects to the verbe" do
-        verbe = Verbe.create! valid_attributes
-        put :update, {:id => verbe.to_param, :verbe => valid_attributes}, valid_session
-        response.should redirect_to(verbe)
-      end
-    end
-
-    describe "with invalid params" do
-      it "assigns the verbe as @verbe" do
-        verbe = Verbe.create! valid_attributes
-        # Trigger the behavior that occurs when invalid params are submitted
-        Verbe.any_instance.stub(:save).and_return(false)
-        put :update, {:id => verbe.to_param, :verbe => { "infinitif" => "invalid value" }}, valid_session
-        assigns(:verbe).should eq(verbe)
-      end
-
-      it "re-renders the 'edit' template" do
-        verbe = Verbe.create! valid_attributes
-        # Trigger the behavior that occurs when invalid params are submitted
-        Verbe.any_instance.stub(:save).and_return(false)
-        put :update, {:id => verbe.to_param, :verbe => { "infinitif" => "invalid value" }}, valid_session
-        response.should render_template("edit")
-      end
-    end
-  end
-
-  describe "DELETE destroy" do
-    it "destroys the requested verbe" do
-      verbe = Verbe.create! valid_attributes
-      expect {
-        delete :destroy, {:id => verbe.to_param}, valid_session
-      }.to change(Verbe, :count).by(-1)
-    end
-
-    it "redirects to the verbes list" do
-      verbe = Verbe.create! valid_attributes
-      delete :destroy, {:id => verbe.to_param}, valid_session
-      response.should redirect_to(verbes_url)
-    end
-  end
+#
+#   # This should return the minimal set of attributes required to create a valid
+#   # Verbe. As you add validations to Verbe, be sure to
+#   # adjust the attributes here as well.
+#   let(:valid_attributes) { { "infinitif" => "MyString" } }
+#
+#   # This should return the minimal set of values that should be in the session
+#   # in order to pass any filters (e.g. authentication) defined in
+#   # VerbesController. Be sure to keep this updated too.
+#   let(:valid_session) { {} }
+#
+#   describe "GET index" do
+#     it "assigns all verbes as @verbes" do
+#       verbe = Verbe.create! valid_attributes
+#       get :index, {}, valid_session
+#       assigns(:verbes).should eq([verbe])
+#     end
+#   end
+#
+#   describe "GET show" do
+#     it "assigns the requested verbe as @verbe" do
+#       verbe = Verbe.create! valid_attributes
+#       get :show, {:id => verbe.to_param}, valid_session
+#       assigns(:verbe).should eq(verbe)
+#     end
+#   end
+#
+#   describe "GET new" do
+#     it "assigns a new verbe as @verbe" do
+#       get :new, {}, valid_session
+#       assigns(:verbe).should be_a_new(Verbe)
+#     end
+#   end
+#
+#   describe "GET edit" do
+#     it "assigns the requested verbe as @verbe" do
+#       verbe = Verbe.create! valid_attributes
+#       get :edit, {:id => verbe.to_param}, valid_session
+#       assigns(:verbe).should eq(verbe)
+#     end
+#   end
+#
+#   describe "POST create" do
+#     describe "with valid params" do
+#       it "creates a new Verbe" do
+#         expect {
+#           post :create, {:verbe => valid_attributes}, valid_session
+#         }.to change(Verbe, :count).by(1)
+#       end
+#
+#       it "assigns a newly created verbe as @verbe" do
+#         post :create, {:verbe => valid_attributes}, valid_session
+#         assigns(:verbe).should be_a(Verbe)
+#         assigns(:verbe).should be_persisted
+#       end
+#
+#       it "redirects to the created verbe" do
+#         post :create, {:verbe => valid_attributes}, valid_session
+#         response.should redirect_to(Verbe.last)
+#       end
+#     end
+#
+#     describe "with invalid params" do
+#       it "assigns a newly created but unsaved verbe as @verbe" do
+#         # Trigger the behavior that occurs when invalid params are submitted
+#         Verbe.any_instance.stub(:save).and_return(false)
+#         post :create, {:verbe => { "infinitif" => "invalid value" }}, valid_session
+#         assigns(:verbe).should be_a_new(Verbe)
+#       end
+#
+#       it "re-renders the 'new' template" do
+#         # Trigger the behavior that occurs when invalid params are submitted
+#         Verbe.any_instance.stub(:save).and_return(false)
+#         post :create, {:verbe => { "infinitif" => "invalid value" }}, valid_session
+#         response.should render_template("new")
+#       end
+#     end
+#   end
+#
+#   describe "PUT update" do
+#     describe "with valid params" do
+#       it "updates the requested verbe" do
+#         verbe = Verbe.create! valid_attributes
+#         # Assuming there are no other verbes in the database, this
+#         # specifies that the Verbe created on the previous line
+#         # receives the :update_attributes message with whatever params are
+#         # submitted in the request.
+#         Verbe.any_instance.should_receive(:update).with({ "infinitif" => "MyString" })
+#         put :update, {:id => verbe.to_param, :verbe => { "infinitif" => "MyString" }}, valid_session
+#       end
+#
+#       it "assigns the requested verbe as @verbe" do
+#         verbe = Verbe.create! valid_attributes
+#         put :update, {:id => verbe.to_param, :verbe => valid_attributes}, valid_session
+#         assigns(:verbe).should eq(verbe)
+#       end
+#
+#       it "redirects to the verbe" do
+#         verbe = Verbe.create! valid_attributes
+#         put :update, {:id => verbe.to_param, :verbe => valid_attributes}, valid_session
+#         response.should redirect_to(verbe)
+#       end
+#     end
+#
+#     describe "with invalid params" do
+#       it "assigns the verbe as @verbe" do
+#         verbe = Verbe.create! valid_attributes
+#         # Trigger the behavior that occurs when invalid params are submitted
+#         Verbe.any_instance.stub(:save).and_return(false)
+#         put :update, {:id => verbe.to_param, :verbe => { "infinitif" => "invalid value" }}, valid_session
+#         assigns(:verbe).should eq(verbe)
+#       end
+#
+#       it "re-renders the 'edit' template" do
+#         verbe = Verbe.create! valid_attributes
+#         # Trigger the behavior that occurs when invalid params are submitted
+#         Verbe.any_instance.stub(:save).and_return(false)
+#         put :update, {:id => verbe.to_param, :verbe => { "infinitif" => "invalid value" }}, valid_session
+#         response.should render_template("edit")
+#       end
+#     end
+#   end
+#
+#   describe "DELETE destroy" do
+#     it "destroys the requested verbe" do
+#       verbe = Verbe.create! valid_attributes
+#       expect {
+#         delete :destroy, {:id => verbe.to_param}, valid_session
+#       }.to change(Verbe, :count).by(-1)
+#     end
+#
+#     it "redirects to the verbes list" do
+#       verbe = Verbe.create! valid_attributes
+#       delete :destroy, {:id => verbe.to_param}, valid_session
+#       response.should redirect_to(verbes_url)
+#     end
+#   end
 
 end

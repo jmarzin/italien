@@ -1,4 +1,4 @@
 require 'spec_helper'
 
-describe Verbe do
+describe Parametre do
 end

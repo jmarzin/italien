@@ -20,141 +20,143 @@ require 'spec_helper'
 
 describe MotsController do
 
-  # This should return the minimal set of attributes required to create a valid
-  # Mot. As you add validations to Mot, be sure to
-  # adjust the attributes here as well.
-  let(:valid_attributes) { { "mot_directeur" => "MyString" } }
-
-  # This should return the minimal set of values that should be in the session
-  # in order to pass any filters (e.g. authentication) defined in
-  # MotsController. Be sure to keep this updated too.
-  let(:valid_session) { {} }
-
-  describe "GET index" do
-    it "assigns all mots as @mots" do
-      mot = Mot.create! valid_attributes
-      get :index, {}, valid_session
-      assigns(:mots).should eq([mot])
-    end
-  end
-
-  describe "GET show" do
-    it "assigns the requested mot as @mot" do
-      mot = Mot.create! valid_attributes
-      get :show, {:id => mot.to_param}, valid_session
-      assigns(:mot).should eq(mot)
-    end
-  end
-
-  describe "GET new" do
-    it "assigns a new mot as @mot" do
-      get :new, {}, valid_session
-      assigns(:mot).should be_a_new(Mot)
-    end
-  end
-
-  describe "GET edit" do
-    it "assigns the requested mot as @mot" do
-      mot = Mot.create! valid_attributes
-      get :edit, {:id => mot.to_param}, valid_session
-      assigns(:mot).should eq(mot)
-    end
-  end
-
-  describe "POST create" do
-    describe "with valid params" do
-      it "creates a new Mot" do
-        expect {
-          post :create, {:mot => valid_attributes}, valid_session
-        }.to change(Mot, :count).by(1)
-      end
-
-      it "assigns a newly created mot as @mot" do
-        post :create, {:mot => valid_attributes}, valid_session
-        assigns(:mot).should be_a(Mot)
-        assigns(:mot).should be_persisted
-      end
-
-      it "redirects to the created mot" do
-        post :create, {:mot => valid_attributes}, valid_session
-        response.should redirect_to(Mot.last)
-      end
-    end
-
-    describe "with invalid params" do
-      it "assigns a newly created but unsaved mot as @mot" do
-        # Trigger the behavior that occurs when invalid params are submitted
-        Mot.any_instance.stub(:save).and_return(false)
-        post :create, {:mot => { "mot_directeur" => "invalid value" }}, valid_session
-        assigns(:mot).should be_a_new(Mot)
-      end
-
-      it "re-renders the 'new' template" do
-        # Trigger the behavior that occurs when invalid params are submitted
-        Mot.any_instance.stub(:save).and_return(false)
-        post :create, {:mot => { "mot_directeur" => "invalid value" }}, valid_session
-        response.should render_template("new")
-      end
-    end
-  end
-
-  describe "PUT update" do
-    describe "with valid params" do
-      it "updates the requested mot" do
-        mot = Mot.create! valid_attributes
-        # Assuming there are no other mots in the database, this
-        # specifies that the Mot created on the previous line
-        # receives the :update_attributes message with whatever params are
-        # submitted in the request.
-        Mot.any_instance.should_receive(:update).with({ "mot_directeur" => "MyString" })
-        put :update, {:id => mot.to_param, :mot => { "mot_directeur" => "MyString" }}, valid_session
-      end
-
-      it "assigns the requested mot as @mot" do
-        mot = Mot.create! valid_attributes
-        put :update, {:id => mot.to_param, :mot => valid_attributes}, valid_session
-        assigns(:mot).should eq(mot)
-      end
-
-      it "redirects to the mot" do
-        mot = Mot.create! valid_attributes
-        put :update, {:id => mot.to_param, :mot => valid_attributes}, valid_session
-        response.should redirect_to(mot)
-      end
-    end
-
-    describe "with invalid params" do
-      it "assigns the mot as @mot" do
-        mot = Mot.create! valid_attributes
-        # Trigger the behavior that occurs when invalid params are submitted
-        Mot.any_instance.stub(:save).and_return(false)
-        put :update, {:id => mot.to_param, :mot => { "mot_directeur" => "invalid value" }}, valid_session
-        assigns(:mot).should eq(mot)
-      end
-
-      it "re-renders the 'edit' template" do
-        mot = Mot.create! valid_attributes
-        # Trigger the behavior that occurs when invalid params are submitted
-        Mot.any_instance.stub(:save).and_return(false)
-        put :update, {:id => mot.to_param, :mot => { "mot_directeur" => "invalid value" }}, valid_session
-        response.should render_template("edit")
-      end
-    end
-  end
-
-  describe "DELETE destroy" do
-    it "destroys the requested mot" do
-      mot = Mot.create! valid_attributes
-      expect {
-        delete :destroy, {:id => mot.to_param}, valid_session
-      }.to change(Mot, :count).by(-1)
-    end
-
-    it "redirects to the mots list" do
-      mot = Mot.create! valid_attributes
-      delete :destroy, {:id => mot.to_param}, valid_session
-      response.should redirect_to(mots_url)
-    end
-  end
+  # # This should return the minimal set of attributes required to create a valid
+  # # Mot. As you add validations to Mot, be sure to
+  # # adjust the attributes here as well.
+  # let(:valid_attributes) { { "mot_directeur" => "mot_directeur",\
+  #                            "francais" => "francais" ,\
+  #                            "italien" => "italien" } }
+  #
+  # # This should return the minimal set of values that should be in the session
+  # # in order to pass any filters (e.g. authentication) defined in
+  # # MotsController. Be sure to keep this updated too.
+  # let(:valid_session) { {} }
+  #
+  # describe "GET index" do
+  #   it "assigns all mots as @mots" do
+  #     mot = Mot.create! valid_attributes
+  #     get :index, {}, valid_session
+  #     assigns(:mots).should eq([mot])
+  #   end
+  # end
+  #
+  # describe "GET show" do
+  #   it "assigns the requested mot as @mot" do
+  #     mot = Mot.create! valid_attributes
+  #     get :show, {:id => mot.to_param}, valid_session
+  #     assigns(:mot).should eq(mot)
+  #   end
+  # end
+  #
+  # describe "GET new" do
+  #   it "assigns a new mot as @mot" do
+  #     get :new, {}, valid_session
+  #     assigns(:mot).should be_a_new(Mot)
+  #   end
+  # end
+  #
+  # describe "GET edit" do
+  #   it "assigns the requested mot as @mot" do
+  #     mot = Mot.create! valid_attributes
+  #     get :edit, {:id => mot.to_param}, valid_session
+  #     assigns(:mot).should eq(mot)
+  #   end
+  # end
+  #
+  # describe "POST create" do
+  #   describe "with valid params" do
+  #     it "creates a new Mot" do
+  #       expect {
+  #         post :create, {:mot => valid_attributes}, valid_session
+  #       }.to change(Mot, :count).by(1)
+  #     end
+  #
+  #     it "assigns a newly created mot as @mot" do
+  #       post :create, {:mot => valid_attributes}, valid_session
+  #       assigns(:mot).should be_a(Mot)
+  #       assigns(:mot).should be_persisted
+  #     end
+  #
+  #     it "redirects to the created mot" do
+  #       post :create, {:mot => valid_attributes}, valid_session
+  #       response.should redirect_to(Mot.last)
+  #     end
+  #   end
+  #
+  #   describe "with invalid params" do
+  #     it "assigns a newly created but unsaved mot as @mot" do
+  #       # Trigger the behavior that occurs when invalid params are submitted
+  #       Mot.any_instance.stub(:save).and_return(false)
+  #       post :create, {:mot => { "mot_directeur" => "invalid value" }}, valid_session
+  #       assigns(:mot).should be_a_new(Mot)
+  #     end
+  #
+  #     it "re-renders the 'new' template" do
+  #       # Trigger the behavior that occurs when invalid params are submitted
+  #       Mot.any_instance.stub(:save).and_return(false)
+  #       post :create, {:mot => { "mot_directeur" => "invalid value" }}, valid_session
+  #       response.should render_template("new")
+  #     end
+  #   end
+  # end
+  #
+  # describe "PUT update" do
+  #   describe "with valid params" do
+  #     it "updates the requested mot" do
+  #       mot = Mot.create! valid_attributes
+  #       # Assuming there are no other mots in the database, this
+  #       # specifies that the Mot created on the previous line
+  #       # receives the :update_attributes message with whatever params are
+  #       # submitted in the request.
+  #       Mot.any_instance.should_receive(:update).with({ "mot_directeur" => "MyString" })
+  #       put :update, {:id => mot.to_param, :mot => { "mot_directeur" => "MyString" }}, valid_session
+  #     end
+  #
+  #     it "assigns the requested mot as @mot" do
+  #       mot = Mot.create! valid_attributes
+  #       put :update, {:id => mot.to_param, :mot => valid_attributes}, valid_session
+  #       assigns(:mot).should eq(mot)
+  #     end
+  #
+  #     it "redirects to the mot" do
+  #       mot = Mot.create! valid_attributes
+  #       put :update, {:id => mot.to_param, :mot => valid_attributes}, valid_session
+  #       response.should redirect_to(mot)
+  #     end
+  #   end
+  #
+  #   describe "with invalid params" do
+  #     it "assigns the mot as @mot" do
+  #       mot = Mot.create! valid_attributes
+  #       # Trigger the behavior that occurs when invalid params are submitted
+  #       Mot.any_instance.stub(:save).and_return(false)
+  #       put :update, {:id => mot.to_param, :mot => { "mot_directeur" => "invalid value" }}, valid_session
+  #       assigns(:mot).should eq(mot)
+  #     end
+  #
+  #     it "re-renders the 'edit' template" do
+  #       mot = Mot.create! valid_attributes
+  #       # Trigger the behavior that occurs when invalid params are submitted
+  #       Mot.any_instance.stub(:save).and_return(false)
+  #       put :update, {:id => mot.to_param, :mot => { "mot_directeur" => "invalid value" }}, valid_session
+  #       response.should render_template("edit")
+  #     end
+  #   end
+  # end
+  #
+  # describe "DELETE destroy" do
+  #   it "destroys the requested mot" do
+  #     mot = Mot.create! valid_attributes
+  #     expect {
+  #       delete :destroy, {:id => mot.to_param}, valid_session
+  #     }.to change(Mot, :count).by(-1)
+  #   end
+  #
+  #   it "redirects to the mots list" do
+  #     mot = Mot.create! valid_attributes
+  #     delete :destroy, {:id => mot.to_param}, valid_session
+  #     response.should redirect_to(mots_url)
+  #   end
+  # end
 
 end
