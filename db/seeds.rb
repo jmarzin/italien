@@ -10,8 +10,6 @@ unless User.exists?
   User.create!({:email => "jmarzin@gmail.com", :admin => true, :password => "51julie2", :password_confirmation => "51julie2" })
 end
 
-Mot.destroy_all
-ScoresMot.destroy_all
 liste = [
     ["à","à la montagne",8,"in montagna"],
     ["à","à midi",8,"a mezzogiorno"],
@@ -739,17 +737,19 @@ liste = [
     ["vulgaire","vulgaire",8,"volgare"],
     ["zone","une zone piétonne",8,"un'àrea pedonale"]]
 liste.each do |m|
-  @m = Mot.create(mot_directeur: m[0], francais: m[1], italien: m[3])
-  @m.save
-  User.all.each do |u|
-    u.scores_mots.build(user_id: u.id,mot_id: @m.id,compteur: m[2])
-    u.save
+  @m = Mot.find_by(francais: m[1])
+  if @m
+    @m.mot_directeur = m[0]
+    @m.italien = m[3]
+    @m.save!
+  else
+    @m = Mot.create(mot_directeur: m[0], francais: m[1], italien: m[3])
+    User.all.each do |u|
+      u.scores_mots.create(user_id: u.id,mot_id: @m.id,compteur: m[2])
+    end
   end
 end
 
-Verbe.destroy_all
-Forme.destroy_all
-ScoresForme.destroy_all
 liste = [
     ["amare",
      [[0, "amo",8],
@@ -957,11 +957,20 @@ liste = [
       [49, "stato",8]]]]
 
 liste.each do |verbe|
-  @verbe = Verbe.create(infinitif: verbe[0])
+  @verbe = Verbe.find_by(infinitif: verbe[0])
+  unless @verbe
+    @verbe = Verbe.create(infinitif: verbe[0])
+  end
   verbe[1].each do |forme|
-    @forme = @verbe.formes.create(rang_forme: forme[0], italien: forme[1])
-    User.all.each do |user|
-      user.scores_formes.create(forme_id: @forme.id, compteur: forme[2])
+    @forme = @verbe.formes.find_by(rang_forme: forme[0])
+    if @forme
+      @forme.italien = forme[1]
+      @forme.save!
+    else
+      @forme = @verbe.formes.create(rang_forme: forme[0], italien: forme[1])
+      User.all.each do |user|
+        user.scores_formes.create(forme_id: @forme.id, compteur: forme[2])
+      end
     end
   end
 end
