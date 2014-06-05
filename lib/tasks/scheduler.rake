@@ -19,9 +19,11 @@ task :stats => :environment do
       champ_mots = user.scores_mots.where("date_rev_1 is not null and compteur = 1").count
       print champ_verbes,' ',champ_mots
       s=user.statistiques.last
-      s.champ_verbes = champ_verbes
-      s.champ_mots = champ_mots
-      s.save!
+      if s
+        s.champ_verbes = champ_verbes
+        s.champ_mots = champ_mots
+        s.save!
+      end
     end
   end
 end
