@@ -20,14 +20,14 @@ class User < ActiveRecord::Base
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
-  has_many :scores_mots
+  has_many :scores_mots, dependent: :destroy
   has_many :mots, through: :scores_mots
   has_many :erreurs, dependent: :destroy
-  has_one  :parametre
-  has_many :scores_formes
+  has_one  :parametre, dependent: :destroy
+  has_many :scores_formes, dependent: :destroy
   has_many :formes, through: :scores_formes
-  has_many :sessions
-
+  has_many :sessions, dependent: :destroy
+  has_many :statistiques, dependent: :destroy
   def init_mots
     User.find_by(admin: true).scores_mots.each do |sco|
       current_user.scores_mots.build(mot_id: sco.mot_id, compteur: sco.compteur)
