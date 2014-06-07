@@ -11,10 +11,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140605204129) do
+ActiveRecord::Schema.define(version: 20140607172559) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "categories", force: true do |t|
+    t.integer  "numero"
+    t.string   "description"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "erreurs", force: true do |t|
     t.string   "attendu"
@@ -44,6 +51,7 @@ ActiveRecord::Schema.define(version: 20140605204129) do
     t.string   "italien"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "category_id"
   end
 
   create_table "parametres", force: true do |t|
@@ -56,6 +64,12 @@ ActiveRecord::Schema.define(version: 20140605204129) do
     t.date     "for_revision_1_min"
     t.integer  "tableau_ids_mots",   array: true
     t.integer  "tableau_ids_formes", array: true
+    t.text     "voc_req"
+    t.text     "for_req"
+    t.integer  "voc_category"
+    t.integer  "voc_delai_revision"
+    t.integer  "for_delai_revision"
+    t.string   "for_temps"
   end
 
   create_table "scores_formes", force: true do |t|
@@ -66,6 +80,7 @@ ActiveRecord::Schema.define(version: 20140605204129) do
     t.datetime "updated_at"
     t.integer  "forme_id"
     t.integer  "user_id"
+    t.integer  "rang_forme"
   end
 
   add_index "scores_formes", ["forme_id"], name: "index_scores_formes_on_forme_id", using: :btree
@@ -78,6 +93,7 @@ ActiveRecord::Schema.define(version: 20140605204129) do
     t.datetime "date_rev_n"
     t.integer  "user_id"
     t.integer  "mot_id"
+    t.integer  "category_id"
   end
 
   add_index "scores_mots", ["user_id", "mot_id"], name: "index_scores_mots_on_user_id_and_mot_id", unique: true, using: :btree

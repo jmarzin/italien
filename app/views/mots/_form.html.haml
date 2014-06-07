@@ -7,6 +7,10 @@
           %li= msg
 
   .field
+    = f.label :category_id
+    = collection_select(:mot, :category_id, Category.all, :id, :numero_description, prompt: true)
+
+  .field
     = f.label :mot_directeur
     = f.text_field :mot_directeur, autocomplete: :off,:autofocus => @peut_supprimer, :disabled => !(@peut_supprimer)
   .field

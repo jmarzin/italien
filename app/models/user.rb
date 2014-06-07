@@ -49,10 +49,10 @@ class User < ActiveRecord::Base
               for_revision_1_min: self.scores_formes.minimum('date_rev_1') || Time.now)
   end
 
-  def self.ajoute_mot_aux_utilisateurs(mot_id,compteur)
+  def self.ajoute_mot_aux_utilisateurs(mot,compteur)
     User.all.each do |u|
-      unless u.scores_mots.find_by(mot_id: mot_id)
-        u.scores_mots.build(mot_id: mot_id,compteur: compteur)
+      unless u.scores_mots.find_by(mot_id: mot.id)
+        u.scores_mots.build(mot_id: mot.id,compteur: compteur,category_id: mot.category_id)
         u.save
       end
     end
@@ -104,13 +104,20 @@ class User < ActiveRecord::Base
   end
 
   def liste_scores_mots_a_reviser
-    scores_mots.where("(date_rev_1 is null or date_rev_1 >= ?) and compteur >= ?",\
-        parametre.voc_revision_1_min,parametre.voc_compteur_min)
+    @voc_compteur_min = self.parametre.voc_compteur_min
+    @voc_revision_1_min = self.parametre.voc_revision_1_min
+    @voc_category = self.parametre.voc_category
+    @voc_delai_revision = self.parametre.voc_delai_revision
+    self.parametre.voc_req ||= ''
+    eval 'scores_mots'+self.parametre.voc_req
   end
 
   def liste_scores_formes_a_reviser
-    scores_formes.where("(date_rev_1 is null or date_rev_1 >= ?) and compteur >= ?",\
-        parametre.for_revision_1_min,parametre.for_compteur_min)
+    @for_compteur_min = self.parametre.for_compteur_min
+    @for_revision_1_min = self.parametre.for_revision_1_min
+    @for_delai_revision = self.parametre.for_delai_revision
+    self.parametre.for_req ||= ''
+    eval 'scores_formes'+self.parametre.for_req
   end
 
   def tirage(classe,tableau)

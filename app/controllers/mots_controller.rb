@@ -11,19 +11,16 @@ class MotsController < ApplicationController
   def index
     if params[:lettres] and params[:lettres].match('^\w*$')
       lettres,params[:lettres] = params[:lettres].downcase,nil
-      if @peut_modifier and not @peut_supprimer
-        params[:page] = (current_user.mots.merge(ScoresMot.where("(date_rev_1 is null or date_rev_1 >= ?) and compteur >= ? and mot_directeur < ?",\
-          current_user.parametre.voc_revision_1_min,\
-          current_user.parametre.voc_compteur_min,\
-          lettres)).count / Kaminari.config.default_per_page).ceil
+      if @peut_corriger and not @peut_supprimer
+        params[:page] = (current_user.mots.merge(current_user.liste_scores_mots_a_reviser).\
+          where("mot_directeur < ?",lettres).count.to_f / Kaminari.config.default_per_page).floor + 1
       else
-        params[:page] =(Mot.where("mot_directeur < ?",lettres).count/Kaminari.config.default_per_page).floor+1
+        params[:page] =(Mot.where("mot_directeur < ?",lettres).count.to_f/Kaminari.config.default_per_page).floor + 1
       end
     end
     session[:page_m] = (params[:page] ||= session[:page_m])
     if @peut_corriger and not @peut_supprimer
-      @mots = current_user.mots.merge(ScoresMot.where("(date_rev_1 is null or date_rev_1 >= ?) and compteur >= ?",\
-        current_user.parametre.voc_revision_1_min,current_user.parametre.voc_compteur_min)).order(:mot_directeur).page params[:page]
+      @mots = current_user.mots.merge(current_user.liste_scores_mots_a_reviser).order(:mot_directeur).page params[:page]
     else
       @mots = Mot.order(:mot_directeur).page params[:page]
     end
@@ -37,7 +34,7 @@ class MotsController < ApplicationController
   # GET /mots/new
   def new
     if @peut_supprimer
-      @mot = Mot.new
+      @mot = Mot.new(category_id: session[:category_id])
       @mot.scores_mots.build(user_id: current_user.id,compteur: ScoresMot::MAX_ESSAIS)
     else
       redirect_to mots_path, notice: "Vous ne pouvez pas créer un nouveau mot"
@@ -55,8 +52,9 @@ class MotsController < ApplicationController
 
     respond_to do |format|
       if @mot.save
+        session[:category_id]=@mot.category_id
         compteur = @mot.scores_mots[0].compteur
-        User.ajoute_mot_aux_utilisateurs(@mot.id, compteur)
+        User.ajoute_mot_aux_utilisateurs(@mot, compteur)
         format.html { redirect_to @mot, notice: 'Le mot a été créé' }
         format.json { render action: 'show', status: :created, location: @mot }
       else
@@ -125,7 +123,7 @@ class MotsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def mot_params
-      params.require(:mot).permit(:mot_directeur, :francais, :italien, \
+      params.require(:mot).permit(:mot_directeur, :francais, :italien, :category_id,\
         scores_mots_attributes: [:compteur,:user_id])
     end
 end

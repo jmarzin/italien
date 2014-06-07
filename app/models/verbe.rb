@@ -33,6 +33,7 @@ class Verbe < ActiveRecord::Base
   def ajuste_compteur(fo,user_id,compteur)
     @scores_forme = fo.scores_formes.find_by(user_id: user_id)
     @scores_forme.compteur = compteur
+    @scores_forme.rang_forme = fo.rang_forme
     @scores_forme.save!
   end
 

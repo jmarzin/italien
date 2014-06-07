@@ -15,6 +15,7 @@ class SauveController < ApplicationController
     unless Rails.env.production?
       Mot.sauve(current_user.id)
       Verbe.sauve
+      Category.sauve
     end
     redirect_to mots_path, notice: "Mots et formes verbales sauvegardées."
   end

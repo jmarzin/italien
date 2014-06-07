@@ -7,6 +7,19 @@ class Forme < ActiveRecord::Base
   has_many :erreurs, as: :en_erreur, dependent: :destroy
   has_many :users, through: :scores_formes
 
+  TEMPS = [
+      ['Indicatif présent',0..5],
+      ['Indicatif imparfait',6..11],
+      ['Indicatif parfait',12..17],
+      ['Indicatif futur',18..23],
+      ['Subjonctif présent',24..29],
+      ['Subjonctif imparfait',30..35],
+      ['Impératif',36..41],
+      ['Conditionnel présent',42..47],
+      ['Gérondif',48..48],
+      ['Participe passé',49..49]
+  ]
+
   FORMES = [
 ['ind.pres.s1','Io','1ère personne singulier présent indicatif',8],
 ['ind.pres.s2','Tu','2ème personne singulier présent indicatif',8],

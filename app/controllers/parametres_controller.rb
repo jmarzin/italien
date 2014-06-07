@@ -23,8 +23,16 @@ class ParametresController < ApplicationController
         format.html { redirect_to edit_parametre_path(@parametre), notice: 'Les paramètres ont été mis à jour' }
         format.json { head :no_content }
       else
-        @voc_nb = current_user.liste_scores_mots_a_reviser.count
-        @for_nb = current_user.liste_scores_formes_a_reviser.count
+        if @parametre.errors[:base].to_s.include?('mots')
+          @voc_nb = 0
+        else
+          @voc_nb = current_user.liste_scores_mots_a_reviser.count
+        end
+        if @parametre.errors[:base].to_s.include?('formes')
+          @for_nb = 0
+        else
+          @for_nb = current_user.liste_scores_formes_a_reviser.count
+        end
         format.html { render action: 'edit' }
         format.json { render json: @mot.errors, status: :unprocessable_entity }
       end
@@ -38,7 +46,7 @@ class ParametresController < ApplicationController
   end
 
   def parametre_params
-    params.require(:parametre).permit(:voc_compteur_min, :voc_revision_1_min,\
-                                      :for_compteur_min, :for_revision_1_min)
+    params.require(:parametre).permit(:voc_compteur_min, :voc_revision_1_min, :voc_category, :voc_delai_revision,\
+                                      :for_compteur_min, :for_revision_1_min, :for_delai_revision, :for_temps)
   end
 end

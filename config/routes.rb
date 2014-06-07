@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  resources :categories
+
   get 'questions/vocabulaire', as: 'questions_vocabulaire'
   get 'questions/conjugaison', as: 'questions_conjugaison'
   post 'questions/verification'

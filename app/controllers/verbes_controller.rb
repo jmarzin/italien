@@ -23,9 +23,6 @@ class VerbesController < ApplicationController
         order(:infinitif).page params[:page]
     end
 
-#    @mots = current_user.mots.merge(ScoresMot.where("(date_rev_1 is null or date_rev_1 >= ?) and compteur >= ?",\
-#        current_user.parametre.voc_revision_1_min,current_user.parametre.voc_compteur_min)).order(:mot_directeur).page params[:page]
-
   end
 
   # GET /verbes/1
@@ -58,7 +55,8 @@ class VerbesController < ApplicationController
             @verbe.formes.each do |forme|
               unless forme.italien == ''
                 forme.scores_formes.each do |score_forme_admin|
-                  u.scores_formes.create(forme_id: score_forme_admin.forme_id,compteur: score_forme_admin.compteur)
+                  u.scores_formes.create(forme_id: score_forme_admin.forme_id,\
+                    compteur: score_forme_admin.compteur, rang_forme: forme.rang_forme)
                 end
               end
             end

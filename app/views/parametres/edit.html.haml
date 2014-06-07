@@ -3,12 +3,16 @@
 = form_for @parametre do |f|
   - if @parametre.errors.any?
     #error_explanation
-      %h2= "#{pluralize(@parametre.errors.count, "erreurs ")} empêchant la création du paramétrage :"
+      %h2= "#{pluralize(@parametre.errors.count, "erreur")} empêchant la création du paramétrage :"
       %ul
         - @parametre.errors.full_messages.each do |msg|
           %li= msg
   %h2 Pour les mots
   %table#par
+    %tr
+    .field
+      %td= f.label "De la catégorie"
+      %td= collection_select(:parametre, :voc_category, Category.all, :id, :numero_description, include_blank: true)
     %tr
     .field
       %td= f.label "Avec un nombre d'essais supérieur ou égal à"
@@ -17,6 +21,10 @@
     .field
       %td= f.label 'Révisés pour la première fois à partir du'
       %td= f.text_field :voc_revision_1_min, size: 5
+    %tr
+    .field
+      %td= f.label 'Non révisés depuis (jours)'
+      %td= f.number_field :voc_delai_revision, class: 'compteur' \
     %tr
       %td Nombre de mots :
       -if @voc_nb > 0
@@ -29,12 +37,20 @@
   %table#par
     %tr
     .field
+      %td= f.label 'Uniquement le temps'
+      %td= f.select(:for_temps, Forme::TEMPS, include_blank: true)
+    %tr
+    .field
       %td= f.label "Avec un nombre d'essais supérieur ou égal à"
       %td= f.number_field :for_compteur_min, class: 'compteur'
     %tr
     .field
-      %td=f.label 'Révisées pour la première fois à partir du'
+      %td= f.label 'Révisées pour la première fois à partir du'
       %td= f.text_field :for_revision_1_min, size: 5
+    %tr
+    .field
+      %td= f.label 'Non révisés depuis (jours)'
+      %td= f.number_field :for_delai_revision, class: 'compteur'
     %tr
       %td Nombre de formes verbales :
       -if @for_nb > 0
