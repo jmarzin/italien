@@ -15,6 +15,11 @@ class VerbesController < ApplicationController
         select("verbes.id, infinitif, verbes.created_at, verbes.updated_at, sum(compteur) as total_compteur").\
         group("verbes.id","infinitif","verbes.created_at","verbes.updated_at").\
         order(:infinitif).page params[:page]
+    elsif @peut_corriger
+      @verbes = Verbe.joins(formes: :scores_formes).merge(current_user.liste_scores_formes_a_reviser).\
+        select("verbes.id, infinitif, verbes.created_at, verbes.updated_at, sum(compteur) as total_compteur").\
+        group("verbes.id","infinitif","verbes.created_at","verbes.updated_at").\
+        order(:infinitif).page params[:page]
     else
       @verbes = Verbe.joins(formes: :scores_formes).where("user_id = ? and (date_rev_1 is null or date_rev_1 >= ?) and compteur >= ?",\
       @user_eq_id,current_user.parametre.for_revision_1_min,current_user.parametre.for_compteur_min).\

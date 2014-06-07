@@ -12,6 +12,9 @@ module Score
       @id = self.mot_id
       @compteur_min = @param.voc_compteur_min
     end
+    unless @tableau.find_index(@id)
+      return
+    end
     if ecart > 0
       (1..ecart).each do |i|
         @tableau<<@id
