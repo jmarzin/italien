@@ -125,8 +125,8 @@ class VerbesController < ApplicationController
   def prepare_user
     if user_signed_in?
       unless current_user.admin
-        current_user.init_mots if current_user.mots.empty?
-        current_user.init_formes if current_user.formes.empty?
+        current_user.init_mots if current_user.scores_mots.empty?
+        current_user.init_formes if current_user.scores_formes.empty?
         current_user.init_parametres unless current_user.parametre
       end
     end

@@ -38,7 +38,7 @@ class User < ActiveRecord::Base
 
   def init_formes
     User.find_by(admin: true).scores_formes.each do |sco|
-      unless sco.italien = ''
+      unless sco.forme.italien == ''
         self.scores_formes.create(rang_forme: sco.rang_forme, forme_id: sco.forme_id, compteur: sco.compteur)
       end
     end
@@ -56,7 +56,7 @@ class User < ActiveRecord::Base
   def self.ajoute_mot_aux_utilisateurs(mot,compteur)
     User.all.each do |u|
       unless u.scores_mots.find_by(mot_id: mot.id)
-        u.scores_mots.build(mot_id: mot.id,compteur: compteur,category_id: mot.category_id)
+        u.scores_mots.create(mot_id: mot.id,compteur: compteur,category_id: mot.category_id)
         u.save
       end
     end
