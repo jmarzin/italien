@@ -1266,10 +1266,15 @@ liste.each do |verbe|
     if @forme
       @forme.italien = forme[1]
       @forme.save!
+      User.all.each do |user|
+        sf = user.scores_formes.find_by(forme_id: @forme.id)
+        sf.rang_forme = @forme.rang_forme
+        sf.save!
+      end
     else
       @forme = @verbe.formes.create(rang_forme: forme[0], italien: forme[1])
       User.all.each do |user|
-        user.scores_formes.create(forme_id: @forme.id, compteur: forme[2])
+        user.scores_formes.create(rang_forme: forme[0], forme_id: @forme.id, compteur: forme[2])
       end
     end
   end
