@@ -1,5 +1,5 @@
 class AddReferenceToCategoryInScoresmots < ActiveRecord::Migration
   def change
-    add_reference :mots, :category
+    add_reference :scores_mots, :category
   end
 end
