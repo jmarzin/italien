@@ -123,22 +123,15 @@ class VerbesController < ApplicationController
       end
     end
 
-    def prepare_user
-      if user_signed_in?
-        unless current_user.admin
-          if current_user.mots.empty?
-            User.where(admin: true).first.scores_mots.each do |sco|
-              current_user.scores_mots.build(mot_id: sco.mot_id, compteur: sco.compteur)
-            end
-            current_user.save
-          end
-          if current_user.parametre == nil
-            current_user.create_parametre(voc_compteur_min: 0, \
-                voc_revision_1_min: current_user.scores_mots.minimum('date_rev_1') || Time.now)
-          end
-        end
+  def prepare_user
+    if user_signed_in?
+      unless current_user.admin
+        current_user.init_mots if current_user.mots.empty?
+        current_user.init_formes if current_user.formes.empty?
+        current_user.init_parametres unless current_user.parametre
       end
     end
+  end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def verbe_params

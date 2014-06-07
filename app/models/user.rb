@@ -28,16 +28,19 @@ class User < ActiveRecord::Base
   has_many :formes, through: :scores_formes
   has_many :sessions, dependent: :destroy
   has_many :statistiques, dependent: :destroy
+
   def init_mots
     User.find_by(admin: true).scores_mots.each do |sco|
-      current_user.scores_mots.build(mot_id: sco.mot_id, compteur: sco.compteur)
+      self.scores_mots.create(category_id: sco.category_id, mot_id: sco.mot_id, compteur: sco.compteur)
     end
     self.save
   end
 
   def init_formes
     User.find_by(admin: true).scores_formes.each do |sco|
-      current_user.scores_formes.build(forme_id: sco.forme_id, compteur: sco.compteur)
+      unless sco.italien = ''
+        self.scores_formes.create(rang_forme: sco.rang_forme, forme_id: sco.forme_id, compteur: sco.compteur)
+      end
     end
     self.save
   end
@@ -46,7 +49,8 @@ class User < ActiveRecord::Base
     self.create_parametre(voc_compteur_min: 0, \
               voc_revision_1_min: self.scores_mots.minimum('date_rev_1') || Time.now, \
               for_compteur_min: 0, \
-              for_revision_1_min: self.scores_formes.minimum('date_rev_1') || Time.now)
+              for_revision_1_min: self.scores_formes.minimum('date_rev_1') || Time.now,\
+              voc_req: '', for_req: '')
   end
 
   def self.ajoute_mot_aux_utilisateurs(mot,compteur)

@@ -1,5 +1,6 @@
 %header#page_header
   %table
+    %th=link_to 'Catégories', categories_path \
     %th=link_to 'Vocabulaire', mots_path \
     %th=link_to 'Conjugaison', verbes_path \
     -if user_signed_in? and not current_user.admin

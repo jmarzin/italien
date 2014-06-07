@@ -1,4 +1,4 @@
-%h1 Listing categories
+%h1 Liste des catégories
 
 %table
   %tr
@@ -12,10 +12,13 @@
     %tr
       %td= category.numero
       %td= category.description
-      %td= link_to 'Show', category
-      %td= link_to 'Edit', edit_category_path(category)
-      %td= link_to 'Destroy', category, :method => :delete, :data => { :confirm => 'Are you sure?' }
-
+      %td= link_to 'Voir', category
+      -if @peut_supprimer
+        %td= link_to 'Corr', edit_category_path(category)
+        %td= link_to 'Supp', category, :method => :delete, :data => { :confirm => 'Supprimer ?' }
+      -else
+        %td
+        %td
 %br
 
-= link_to 'New Category', new_category_path
+= link_to 'Nouvelle catégorie', new_category_path

@@ -33,7 +33,7 @@
       -if @peut_corriger
         %td= link_to 'Corr', edit_mot_path(mot)
       -else
-        %tdn
+        %td
       -if @peut_supprimer
         %td= link_to 'Supp', mot, :method => :delete, :data => { :confirm => 'Supprimer ?' }
       -else
