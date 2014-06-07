@@ -1268,7 +1268,7 @@ liste.each do |verbe|
       @forme.save!
       User.all.each do |user|
         sf = user.scores_formes.find_by(forme_id: @forme.id)
-        sf.rang_forme = @forme.rang_forme
+        sf.rang_forme = forme[0]
         sf.save!
       end
     else
