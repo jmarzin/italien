@@ -373,7 +373,7 @@ liste = [
     [5,"emménager","emménager",8,"trasferirsi"],
     [4,"émouvant","émouvant",8,"commovente"],
     [10,"emploi","la place/l'emploi/le poste à pourvoir",8,"il posto"],
-    [10,"emploi",""pôle emploi"",8,"l'uffìcio di collocamento"],
+    [10,"emploi","pôle emploi",8,"l'uffìcio di collocamento"],
     [10,"emploi","un emploi",8,"un impiego"],
     [10,"employé","un employé",8,"un impiegato"],
     [10,"employer","employer",8,"assùmere"],
