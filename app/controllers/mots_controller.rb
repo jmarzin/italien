@@ -49,6 +49,7 @@ class MotsController < ApplicationController
   # POST /mots.json
   def create
     @mot = Mot.new(mot_params)
+    @mot.scores_mots[0].category_id = @mot.category_id
 
     respond_to do |format|
       if @mot.save
