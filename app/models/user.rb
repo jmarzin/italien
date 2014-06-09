@@ -46,11 +46,15 @@ class User < ActiveRecord::Base
   end
 
   def init_parametres
-    self.create_parametre(voc_compteur_min: 0, \
-              voc_revision_1_min: self.scores_mots.minimum('date_rev_1') || Time.now, \
-              for_compteur_min: 0, \
-              for_revision_1_min: self.scores_formes.minimum('date_rev_1') || Time.now,\
-              voc_req: '', for_req: '')
+    unless self.parametre
+      self.create_parametre(voc_compteur_min: 0, \
+        voc_revision_1_min: self.scores_mots.minimum('date_rev_1') || Time.now, \
+        for_compteur_min: 0, \
+        for_revision_1_min: self.scores_formes.minimum('date_rev_1') || Time.now,\
+        voc_req: '', for_req: '')
+    end
+    self.parametre.update_req(self.parametre.attributes).save
+    self.save
   end
 
   def self.ajoute_mot_aux_utilisateurs(mot,compteur)

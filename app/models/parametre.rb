@@ -28,32 +28,39 @@ class Parametre < ActiveRecord::Base
 
   alias update_original update
 
-  def update(params)
+  def update_req(params)
     self.voc_req,self.for_req = '',''
-    unless params['voc_compteur_min'] == ''
+    self.voc_req_will_change!
+    self.for_req_will_change!
+    unless params['voc_compteur_min'].blank?
       self.voc_req << ".where(\"compteur >= ?\",@voc_compteur_min)"
     end
-    unless params['voc_revision_1_min'] == ''
+    unless params['voc_revision_1_min'].blank?
       self.voc_req << ".where(\"date_rev_1 is null or date_rev_1 >= ?\",@voc_revision_1_min)"
     end
-    unless params['voc_category'] == ''
+    unless params['voc_category'].blank?
       self.voc_req << ".where(category_id: @voc_category)"
     end
-    unless params['voc_delai_revision'] == ''
+    unless params['voc_delai_revision'].blank?
       self.voc_req << ".where(\"date_rev_n is not null and date_rev_n < (current_timestamp - ? * interval '1 day')\",@voc_delai_revision)"
     end
-    unless params['for_compteur_min'] == ''
+    unless params['for_compteur_min'].blank?
       self.for_req << ".where(\"compteur >= ?\",@for_compteur_min)"
     end
-    unless params['for_revision_1_min'] == ''
+    unless params['for_revision_1_min'].blank?
       self.for_req << ".where(\"date_rev_1 is null or date_rev_1 >= ?\",@for_revision_1_min)"
     end
-    unless params['for_temps'] == ''
+    unless params['for_temps'].blank?
       self.for_req << ".where(rang_forme: #{params['for_temps']})"
     end
-    unless params['for_delai_revision'] == ''
+    unless params['for_delai_revision'].blank?
       self.for_req << ".where(\"date_rev_n is not null and date_rev_n < (current_timestamp - ? * interval '1 day')\",@for_delai_revision)"
     end
+    self
+  end
+
+  def update(params)
+    self.update_req(params)
     self.update_original(params)
   end
 end

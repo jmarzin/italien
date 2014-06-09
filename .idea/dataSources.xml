@@ -4,8 +4,8 @@
     <data-source source="LOCAL" name="Rails italien: development" uuid="0f84220e-42e4-41e8-b5f7-9e33937985dd">
       <driver-ref>postgresql</driver-ref>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql:italien_development</jdbc-url>
-      <user-name>italien</user-name>
+      <jdbc-url>jdbc:postgresql://127.0.0.1:5432/italien_development</jdbc-url>
+      <user-name>jacques</user-name>
       <user-password>df9fdf9bdfc0dfdfdfc6dfc3dfcfdf98</user-password>
       <libraries />
     </data-source>
@@ -13,7 +13,7 @@
       <driver-ref>postgresql</driver-ref>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
       <jdbc-url>jdbc:postgresql:italien_test</jdbc-url>
-      <user-name>italien</user-name>
+      <user-name>jacques</user-name>
       <user-password>df9fdf9bdfc0dfdfdfc6dfc3dfcfdf98</user-password>
       <libraries />
     </data-source>
@@ -29,7 +29,7 @@
       <driver-ref>postgresql</driver-ref>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
       <jdbc-url>jdbc:postgresql:italien_test</jdbc-url>
-      <user-name>italien</user-name>
+      <user-name>jacques</user-name>
       <user-password>df9fdf9bdfc0dfdfdfc6dfc3dfcfdf98</user-password>
       <libraries />
     </data-source>

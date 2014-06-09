@@ -117,7 +117,7 @@ class MotsController < ApplicationController
         unless current_user.admin
           current_user.init_mots if current_user.mots.empty?
           current_user.init_formes if current_user.formes.empty?
-          current_user.init_parametres unless current_user.parametre
+          current_user.init_parametres if current_user.parametre.blank? or current_user.parametre.voc_req.blank?
         end
       end
     end

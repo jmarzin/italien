@@ -11,6 +11,40 @@ unless User.exists?
 end
 
 liste = [
+    [1,"L'individu"],
+    [2,"La famille"],
+    [3,"Le corps"],
+    [4,"Les sentiments et les émotions"],
+    [5,"La maison"],
+    [6,"La cuisine et les repas"],
+    [7,"La ville"],
+    [8,"Les courses"],
+    [9,"L'éducation"],
+    [10,"Le travail"],
+    [11,"La santé"],
+    [12,"Les voyages et les sorties"],
+    [13,"Les arts et les loisirs"],
+    [14,"Les sports"],
+    [15,"Le temps qu'il fait, le temps qui passe"],
+    [16,"La nature et l'environnement"],
+    [17,"Les médias"],
+    [18,"Les techniques de communication"],
+    [19,"La vie en société"],
+    [20,"La politique"],
+    [21,"Pensée, opinion, croyance"],
+    [22,"Du français à l'italien"]]
+
+liste.each do |c|
+  @c = Category.find_by(numero: c[0])
+  if @c
+    @c.description = c[1]
+    @c.save!
+  else
+    @c = Category.create(numero: c[0], description: c[1])
+  end
+end
+
+liste = [
     [22,"à","une tasse à café",8,"una tazzina da caffè"],
     [22,"à","au lit",8,"a letto"],
     [22,"à","à la différence de",8,"a differenza di"],
