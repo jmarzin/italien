@@ -75,6 +75,7 @@ class VerbesController < ApplicationController
   def update
     respond_to do |format|
       if @verbe.mise_a_jour(verbe_params,current_user.id)
+        session[:tableau_formes_ok] = false unless current_user.admin
         format.html { redirect_to @verbe, notice: 'Le verbe a été mis à jour.' }
         format.json { head :no_content }
       else

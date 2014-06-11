@@ -70,6 +70,7 @@ class MotsController < ApplicationController
   def update
     respond_to do |format|
       if @mot.update(mot_params)
+        session[:tableau_mots_ok] = false unless current_user.admin
         format.html { redirect_to @mot, notice: 'Le mot a été mis à jour.' }
         format.json { head :no_content }
       else
