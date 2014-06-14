@@ -1,0 +1,21 @@
+-if current_user
+  %h3=current_user.email
+  -if current_user.admin
+    Administrateur
+  -else
+    -par=Parametre.find_by(user_id: current_user.id)
+    %h3 Paramètres pour les mots
+    %h4="#{Category.find_by(numero: par.voc_category).description}" unless par.voc_category.blank?
+    %h4="Compteur >= #{par.voc_compteur_min}" unless par.voc_compteur_min.blank?
+    %h4="1ère révision >= #{par.voc_revision_1_min}" unless par.voc_revision_1_min.blank?
+    %h4="Non révisés depuis #{par.voc_delai_revision} #{'jour'.pluralize(par.voc_delai_revision)}" unless par.voc_delai_revision.blank?
+    %h4="#{par.tableau_ids_mots.size} points" unless par.tableau_ids_mots.blank? or not session[:tableau_mots_ok]
+    %h3 Paramètres pour les formes verbales
+    %h4="#{Forme::TEMPS.flatten[Forme::TEMPS.flatten.find_index(par.for_temps.to_range) - 1]}" unless par.for_temps.blank?
+    %h4="Compteur >= #{par.for_compteur_min}" unless par.for_compteur_min.blank?
+    %h4="1ère révision >= #{par.for_revision_1_min}" unless par.for_revision_1_min.blank?
+    %h4="Non révisés depuis #{par.for_delai_revision} #{'jour'.pluralize(par.for_delai_revision)}" unless par.for_delai_revision.blank?
+    %h4="#{par.tableau_ids_formes.size} points" unless par.tableau_ids_formes.blank? or not session[:tableau_mots_ok]
+
+-else
+  %h3 Non identifié

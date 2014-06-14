@@ -33,7 +33,7 @@ table#par {
 @for $i from 1 through 3 {
   table#verbe#{$i} {
     border: 1px solid black;
-    width: 80%;
+    width: 100%;
 
     td {
       text-align: center;
