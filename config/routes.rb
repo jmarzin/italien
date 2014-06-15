@@ -10,6 +10,8 @@ Rails.application.routes.draw do
   post 'ecrit', to: 'sauve#ecrit', as: 'sauve_mot_verbe'
   get 'stats', to: 'stats#affiche', as: 'affiche_stats'
 
+  get 'aide', to: 'aide#show', as:'aide'
+
   resources :parametres, only: [:edit, :update]
 
   resources :mots
