@@ -1,5 +1,6 @@
 class ProblemesController < ApplicationController
   before_action :set_probleme, only: [:show, :edit, :update, :destroy]
+  before_action :set_autorisations
 
   # GET /problemes
   # GET /problemes.json
@@ -27,8 +28,11 @@ class ProblemesController < ApplicationController
     @probleme = Probleme.new(probleme_params)
 
     respond_to do |format|
+      if current_user
+        @probleme.user_id = current_user.id
+      end
       if @probleme.save
-        format.html { redirect_to @probleme, notice: 'Probleme was successfully created.' }
+        format.html { redirect_to @probleme, notice: 'Le problème a été enregistré.' }
         format.json { render action: 'show', status: :created, location: @probleme }
       else
         format.html { render action: 'new' }
@@ -42,7 +46,7 @@ class ProblemesController < ApplicationController
   def update
     respond_to do |format|
       if @probleme.update(probleme_params)
-        format.html { redirect_to @probleme, notice: 'Probleme was successfully updated.' }
+        format.html { redirect_to @probleme, notice: 'Le problème a été enregistré.' }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
@@ -66,6 +70,14 @@ class ProblemesController < ApplicationController
     def set_probleme
       @probleme = Probleme.find(params[:id])
     end
+
+  def set_autorisations
+    if user_signed_in? and current_user.admin
+      @admin = true
+    else
+      @admin = false
+    end
+  end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def probleme_params

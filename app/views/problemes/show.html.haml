@@ -10,8 +10,9 @@
   %b Date correction:
   = @probleme.date_correction
 
-= link_to 'Corr', edit_probleme_path(@probleme)
-\|
+-if @admin or (current_user and current_user.id == @probleme.user_id)
+  = link_to 'Corr', edit_probleme_path(@probleme)
+  \|
 = button_to 'Nouveau', {action: 'new'}, method: :get, autofocus: true
 \|
 = link_to 'Retour', problemes_path

@@ -15,9 +15,14 @@
       %td= probleme.corrige
       %td= probleme.date_correction
       %td= link_to 'Voir', probleme
-      %td= link_to 'Corr', edit_probleme_path(probleme)
-      %td= link_to 'Supp', probleme, :method => :delete, :data => { :confirm => 'Supprimer ?' }
-
+      -if @admin or (current_user and current_user.id == probleme.user_id)
+        %td= link_to 'Corr', edit_probleme_path(probleme)
+      -else
+        %td
+      -if @admin
+        %td= link_to 'Supp', probleme, :method => :delete, :data => { :confirm => 'Supprimer ?' }
+      -else
+        %td
 %br
 
 = link_to 'Nouveau problème', new_probleme_path

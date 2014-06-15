@@ -11,8 +11,8 @@
     -if user_signed_in? and current_user.admin
       %th=link_to 'Sauve', lance_sauve_path
     -if user_signed_in?
-      %th=link_to "Déconnecter #{current_user.email}", destroy_user_session_path, method: :delete
+      %th=link_to 'Déconnexion', destroy_user_session_path, method: :delete
     -else
       %th=link_to 'Connexion', new_user_session_path
     %th=link_to '?', aide_path
-    %th=link_to 'Incident',new_probleme_path
+    %th=link_to 'Erreur',new_probleme_path
