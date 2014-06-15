@@ -1,7 +1,7 @@
 $(document).ready ->
 
   $('.accent').click (e) ->
-    if $('reponse').prop("disabled")
+    unless $('reponse').prop("disabled")
       $('#reponse').val $('#reponse').val() + $(this).html()
       $('#reponse').focus()
     else
