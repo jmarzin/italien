@@ -1,7 +1,7 @@
 %h3 Activité du jour
 -if current_user and not current_user.admin
   -res=current_user.sessions.where("date(debut) = ?", Date.today).select("sum(fin-debut) as duree, sum(bonnes_reponses) as bonnes,sum(mauvaises_reponses) as mauvaises").take
-  -if res.bonnes + res.mauvaises > 0
+  -if res.duree and (res.bonnes + res.mauvaises) > 0
     %h4="Révision pendant #{res.duree}"
     %h4="#{res.bonnes+res.mauvaises} #{'question'.pluralize(res.bonnes+res.mauvaises)}"
     %h4="#{res.bonnes*100/(res.bonnes+res.mauvaises)} % de réussite"
