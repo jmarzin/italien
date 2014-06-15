@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140607172559) do
+ActiveRecord::Schema.define(version: 20140615182438) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -70,6 +70,15 @@ ActiveRecord::Schema.define(version: 20140607172559) do
     t.integer  "voc_delai_revision"
     t.integer  "for_delai_revision"
     t.string   "for_temps"
+  end
+
+  create_table "problemes", force: true do |t|
+    t.text     "texte"
+    t.boolean  "corrige"
+    t.datetime "date_correction"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "user_id"
   end
 
   create_table "scores_formes", force: true do |t|

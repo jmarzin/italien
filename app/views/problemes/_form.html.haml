@@ -1,0 +1,19 @@
+= form_for @probleme do |f|
+  - if @probleme.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@probleme.errors.count, "error")} prohibited this probleme from being saved:"
+      %ul
+        - @probleme.errors.full_messages.each do |msg|
+          %li= msg
+
+  .field
+    = f.label :texte
+    = f.text_area :texte
+  .field
+    = f.label :corrige
+    = f.check_box :corrige
+  .field
+    = f.label :date_correction
+    = f.datetime_select :date_correction
+  .actions
+    = f.submit 'Enregistrer'

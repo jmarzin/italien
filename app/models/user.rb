@@ -28,6 +28,7 @@ class User < ActiveRecord::Base
   has_many :formes, through: :scores_formes
   has_many :sessions, dependent: :destroy
   has_many :statistiques, dependent: :destroy
+  has_many :problemes, dependent: :nullify
 
   def init_mots
     User.find_by(admin: true).scores_mots.each do |sco|

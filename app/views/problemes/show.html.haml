@@ -1,0 +1,17 @@
+%p#notice= notice
+
+%p
+  %b Texte:
+  = @probleme.texte
+%p
+  %b Corrige:
+  = @probleme.corrige
+%p
+  %b Date correction:
+  = @probleme.date_correction
+
+= link_to 'Corr', edit_probleme_path(@probleme)
+\|
+= button_to 'Nouveau', {action: 'new'}, method: :get, autofocus: true
+\|
+= link_to 'Retour', problemes_path

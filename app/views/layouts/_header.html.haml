@@ -14,4 +14,5 @@
       %th=link_to "Déconnecter #{current_user.email}", destroy_user_session_path, method: :delete
     -else
       %th=link_to 'Connexion', new_user_session_path
-    %th=link_to 'Aide', aide_path
+    %th=link_to '?', aide_path
+    %th=link_to 'Incident',new_probleme_path

@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  resources :problemes
+
   resources :categories
 
   get 'questions/vocabulaire', as: 'questions_vocabulaire'

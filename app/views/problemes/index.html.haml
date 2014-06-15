@@ -1,0 +1,23 @@
+%h1 Liste des problèmes
+
+%table
+  %tr
+    %th Texte
+    %th Corrigé
+    %th Date correction
+    %th
+    %th
+    %th
+
+  - @problemes.each do |probleme|
+    %tr
+      %td= probleme.texte
+      %td= probleme.corrige
+      %td= probleme.date_correction
+      %td= link_to 'Voir', probleme
+      %td= link_to 'Corr', edit_probleme_path(probleme)
+      %td= link_to 'Supp', probleme, :method => :delete, :data => { :confirm => 'Supprimer ?' }
+
+%br
+
+= link_to 'Nouveau problème', new_probleme_path
