@@ -28,13 +28,13 @@
   %br
 %br
 %h1=params[:question]
-%h1=text_field_tag 'reponse', '', autocomplete: :off,autofocus: true, disabled: params[:message] != nil,data: { no_turbolink: true }
-=button_tag 'à', type: 'button',id: 'a1',data: { no_turbolink: true }
-=button_tag 'é', type: 'button',id: 'a2',data: { no_turbolink: true }
-=button_tag 'è', type: 'button',id: 'a3',data: { no_turbolink: true }
-=button_tag 'ì', type: 'button',id: 'a4',data: { no_turbolink: true }
-=button_tag 'ò', type: 'button',id: 'a5',data: { no_turbolink: true }
-=button_tag 'ù', type: 'button',id: 'a6',data: { no_turbolink: true }
+%h1=text_field_tag 'reponse', '', autocomplete: :off,autofocus: true, disabled: params[:message] != nil
+=button_tag 'à', type: 'button',id: 'a1'
+=button_tag 'é', type: 'button',id: 'a2'
+=button_tag 'è', type: 'button',id: 'a3'
+=button_tag 'ì', type: 'button',id: 'a4'
+=button_tag 'ò', type: 'button',id: 'a5'
+=button_tag 'ù', type: 'button',id: 'a6'
 %br
 -if params[:message] == nil
   =button_tag 'Vérifier'
