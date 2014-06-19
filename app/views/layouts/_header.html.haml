@@ -4,9 +4,9 @@
     %th=link_to 'Vocabulaire', mots_path \
     %th=link_to 'Conjugaisons', verbes_path \
     -if user_signed_in? and not current_user.admin
-      %th=link_to 'Révision vocabulaire', questions_vocabulaire_path \
-      %th=link_to 'Révision conjugaisons', questions_conjugaison_path \
-      %th=link_to 'Révision', lance_questions_path \
+      %th=link_to 'Révision vocabulaire', questions_revision_vocabulaire_path, :data => {:vocabulaire => true} \
+      %th=link_to 'Révision conjugaisons', questions_revision_conjugaison_path, :data => {:conjugaison => true} \
+      %th=link_to 'Révision', questions_revision_path \
       %th=link_to 'Paramétrage', edit_parametre_path(current_user.parametre) \
     -if user_signed_in? and current_user.admin
       %th=link_to 'Sauve', lance_sauve_path

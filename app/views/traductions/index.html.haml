@@ -1,0 +1,14 @@
+%h1 Listing traductions
+
+%table
+  %tr
+    %th Italien
+    %th Francais
+    %th Catégorie
+
+  - @traductions.each do |traduction|
+    %tr
+      %td= traduction.italien
+      %td= traduction.francais
+      %td= traduction.category_id
+

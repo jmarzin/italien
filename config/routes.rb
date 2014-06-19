@@ -1,13 +1,17 @@
 Rails.application.routes.draw do
 
+  resources :traductions, only: :index
+
   resources :problemes
 
   resources :categories
 
   get 'questions/vocabulaire', as: 'questions_vocabulaire'
   get 'questions/conjugaison', as: 'questions_conjugaison'
+  get 'questions/revision_conjugaison', as: 'questions_revision_conjugaison'
+  get 'questions/revision_vocabulaire', as: 'questions_revision_vocabulaire'
   post 'questions/verification'
-  get 'questions', to: 'questions#lance', as: 'lance_questions'
+  get 'questions', to: 'questions#revision', as: 'questions_revision'
   get 'sauve', to: 'sauve#lance', as: 'lance_sauve'
   post 'ecrit', to: 'sauve#ecrit', as: 'sauve_mot_verbe'
   get 'stats', to: 'stats#affiche', as: 'affiche_stats'

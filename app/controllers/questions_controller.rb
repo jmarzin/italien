@@ -2,13 +2,23 @@ class QuestionsController < ApplicationController
     before_action :authenticate_user!
 
   # GET/questions/lance
-  def lance
+  def revision
     session[:revision] = true
     if rand(4) > 2
       redirect_to action: 'conjugaison'
     else
       redirect_to action: 'vocabulaire'
     end
+  end
+
+  def revision_vocabulaire
+    session[:revision] = false
+    redirect_to action: 'vocabulaire'
+  end
+
+  def revision_conjugaison
+    session[:revision] = false
+    redirect_to action: 'conjugaison'
   end
 
   #GET/questions/vocabulaire
@@ -49,7 +59,7 @@ class QuestionsController < ApplicationController
       render action: session[:type]
     else
       if session[:revision] then
-        redirect_to action: 'lance'
+        redirect_to action: 'revision'
       else
         session[:type] = 'vocabulaire' unless session[:type]
         redirect_to action: session[:type]
