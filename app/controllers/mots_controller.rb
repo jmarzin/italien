@@ -22,7 +22,10 @@ class MotsController < ApplicationController
     if @peut_corriger and not @peut_supprimer
       @mots = current_user.mots.merge(current_user.liste_scores_mots_a_reviser).order(:mot_directeur).page params[:page]
     else
-      @mots = Mot.order(:mot_directeur).page params[:page]
+      if params[:recherche]
+        params[:page] = 1
+      end
+      @mots = Mot.recherche(params[:recherche]).order(:mot_directeur).page params[:page]
     end
   end
 
@@ -125,7 +128,7 @@ class MotsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def mot_params
-      params.require(:mot).permit(:mot_directeur, :francais, :italien, :category_id,\
+      params.require(:mot).permit(:mot_directeur, :francais, :italien, :category_id, :niveau,\
         scores_mots_attributes: [:compteur,:user_id])
     end
 end

@@ -4,40 +4,45 @@
   -user_id = current_user.id
 -else
   -user_id = User.where(admin: true).first.id
-%table#lettres
-  %tr
-    -('a'..'z').each do |lettre|
-      %td=link_to lettre,mots_path(lettres: lettre)
-%br
-%table#mots
-  %tr
-    %th#m_d Mot directeur
-    %th#f Francais
-    %th#i Italien
-    %th#c Compteur
-    %th#c_l Créé le
-    %th#m_l Modifié le
-    %th#lien
-    %th#lien
-    %th#lien
-
-  - @mots.each do |mot|
+=form_tag mots_path, :method => 'get' do
+  %table#lettres
     %tr
-      %td= mot.mot_directeur
-      %td= if mot.francais.size <= 30 then mot.francais else mot.francais[0..26]+'...' end
-      %td= if mot.italien.size <= 30 then mot.italien else mot.italien[0..26]+'...' end
-      %td= mot.scores_mots.where(user_id: user_id, mot_id: mot.id).first.compteur
-      %td= mot.created_at.strftime('%Y/%m/%d')
-      %td= mot.updated_at.strftime('%Y/%m/%d')
-      %td= link_to 'Voir', mot
-      -if @peut_corriger
-        %td= link_to 'Corr', edit_mot_path(mot)
-      -else
-        %td
-      -if @peut_supprimer
-        %td= link_to 'Supp', mot, :method => :delete, :data => { :confirm => 'Supprimer ?' }
-      -else
-        %td
+      -('a'..'z').each do |lettre|
+        %td=link_to lettre,mots_path(lettres: lettre)
+  %br
+  -if @peut_supprimer
+    = text_field_tag :recherche, params[:recherche]
+    = submit_tag "Recherche", :name => nil
+  %table#mots
+    %tr
+      %th#m_d Mot directeur
+      %th#f Francais
+      %th#i Italien
+      %th#c Compteur
+      %th#c_l Créé le
+      %th#m_l Catégorie
+      %th#lien
+      %th#lien
+      %th#lien
+
+    - @mots.each do |mot|
+      %tr
+        %td= mot.mot_directeur
+        %td= if mot.francais.size <= 30 then mot.francais else mot.francais[0..26]+'...' end
+        %td= if mot.italien.size <= 30 then mot.italien else mot.italien[0..26]+'...' end
+        %td= mot.scores_mots.where(user_id: user_id, mot_id: mot.id).first.compteur
+        %td= mot.created_at.strftime('%Y/%m/%d')
+        %td= mot.category.numero
+        %td= mot.updated_at.strftime('%Y/%m/%d')
+        %td= link_to 'Voir', mot
+        -if @peut_corriger
+          %td= link_to 'Corr', edit_mot_path(mot)
+        -else
+          %td
+        -if @peut_supprimer
+          %td= link_to 'Supp', mot, :method => :delete, :data => { :confirm => 'Supprimer ?' }
+        -else
+          %td
 
 %br
 = paginate @mots

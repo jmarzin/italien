@@ -8,13 +8,22 @@ class Mot < ActiveRecord::Base
 
   validates :mot_directeur, presence: {message: 'Le mot directeur est obligatoire'}
   validates :francais, presence: {message: 'Le mot ou expression en français est obligatoire'}
-  validates :francais, uniqueness: {message: 'Le mot existe déjà' }
+  validates :francais, uniqueness: { scope: :category_id, message: 'Le mot existe déjà' }
   validates :italien, presence: {message: 'La traduction italienne est obligatoire'}
+
+  def self.recherche(recherche)
+    if recherche
+      Mot.where('mot_directeur || francais || italien like ?','%'+recherche+'%')
+    else
+      Mot.all
+    end
+  end
 
   def update(mot_params)
     self.mot_directeur = mot_params['mot_directeur']
     self.francais = mot_params['francais']
     self.italien = mot_params['italien']
+    self.niveau = mot_params['niveau']
     unless mot_params['category_id'] == self.category_id
       self.category_id = mot_params['category_id']
       User.all.each do |u|
@@ -30,7 +39,7 @@ class Mot < ActiveRecord::Base
   end
 
   def question_en_francais
-    self.francais
+    self.francais + ' (' + self.category.description + ')'
   end
 
   def self.sauve(user_id)

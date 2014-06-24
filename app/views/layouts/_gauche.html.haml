@@ -5,7 +5,7 @@
   -else
     -par=Parametre.find_by(user_id: current_user.id)
     %h3 Paramètres pour les mots
-    %h4="#{Category.find_by(numero: par.voc_category).description}" unless par.voc_category.blank?
+    %h4="#{Category.find(par.voc_category).description}" unless par.voc_category.blank?
     %h4="Compteur >= #{par.voc_compteur_min}" unless par.voc_compteur_min.blank?
     %h4="1ère révision >= #{par.voc_revision_1_min}" unless par.voc_revision_1_min.blank?
     %h4="Non révisés depuis #{par.voc_delai_revision} #{'jour'.pluralize(par.voc_delai_revision)}" unless par.voc_delai_revision.blank?
