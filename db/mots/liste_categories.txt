@@ -21,4 +21,6 @@ liste = [
 [20,"La politique"],
 [21,"Pensée, opinion, croyance"],
 [22,"Du français à l'italien"],
-[23,"Adverbes"]]
+[23,"Adverbes"],
+[101,"Il tempo"],
+[105,"I pasti e il cibo"]]
