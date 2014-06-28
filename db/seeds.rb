@@ -2850,13 +2850,17 @@ liste.each do |verbe|
       @forme.save!
       User.all.each do |user|
         sf = user.scores_formes.find_by(forme_id: @forme.id)
-        sf.rang_forme = forme[0]
-        sf.save!
+        if sf
+          sf.rang_forme = forme[0]
+          sf.save!
+        end
       end
     else
       @forme = @verbe.formes.create(rang_forme: forme[0], italien: forme[1])
       User.all.each do |user|
-        user.scores_formes.create(rang_forme: forme[0], forme_id: @forme.id, compteur: forme[2])
+        if user.admin or forme[1] != ''
+          user.scores_formes.create(rang_forme: forme[0], forme_id: @forme.id, compteur: forme[2])
+        end
       end
     end
   end
