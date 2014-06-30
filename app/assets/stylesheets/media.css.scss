@@ -1,0 +1,8 @@
+@media screen and (max-width: 800px) {
+  section#sidebar-left {display: none;}
+  section#sidebar-right {display: none;}
+  section#content { float: none; width: 100%; }
+}
+@media screen and (max-width: 640px) {
+
+}
