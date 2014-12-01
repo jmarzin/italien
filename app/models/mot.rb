@@ -54,4 +54,8 @@ class Mot < ActiveRecord::Base
     true
   end
 
+  def self.api_v1
+    "coucou les mots"
+  end
+
 end

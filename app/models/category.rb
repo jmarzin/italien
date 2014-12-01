@@ -16,4 +16,9 @@ class Category < ActiveRecord::Base
   def numero_description
     self.numero.to_s+' '+self.description
   end
+
+  def self.api_v1
+    "coucou les catégories"
+  end
+
 end

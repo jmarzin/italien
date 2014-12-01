@@ -1,38 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="DataSourceManagerImpl" format="xml" hash="776488597">
+  <component name="DataSourceManagerImpl" format="xml" hash="1099257638">
     <data-source source="LOCAL" name="Rails italien: development" uuid="0f84220e-42e4-41e8-b5f7-9e33937985dd">
       <driver-ref>postgresql</driver-ref>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
       <jdbc-url>jdbc:postgresql://127.0.0.1:5432/italien_development</jdbc-url>
-      <user-name>jacques</user-name>
-      <user-password>df9fdf9bdfc0dfdfdfc6dfc3dfcfdf98</user-password>
       <libraries />
     </data-source>
     <data-source source="LOCAL" name="Rails italien: test" uuid="3d19a3d7-2a57-4d51-8bf5-49717cf4f904">
       <driver-ref>postgresql</driver-ref>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
       <jdbc-url>jdbc:postgresql:italien_test</jdbc-url>
-      <user-name>jacques</user-name>
-      <user-password>df9fdf9bdfc0dfdfdfc6dfc3dfcfdf98</user-password>
       <libraries />
     </data-source>
     <data-source source="LOCAL" name="Rails italien: production" uuid="01570b8d-00f2-49fd-bc58-0fa92c6ea420">
       <driver-ref>postgresql</driver-ref>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
       <jdbc-url>jdbc:postgresql:italien_production</jdbc-url>
-      <user-name>italien</user-name>
-      <user-password>df96df8fdf97df8adfefdfe4dffcdff1df8ddfe3dffedfebdfe6dfe3dfefdfe4dff5dfeedfebdffedfebdfe8dfebdff9dfefdff5dffadfebdff9dff9dffddfe5dff8dfeedf8ddff7df8adf8fdf94</user-password>
       <libraries />
     </data-source>
     <data-source source="LOCAL" name="Rails italien: cucumber" uuid="caba3fde-3a61-40be-8585-90a86dc8e662">
       <driver-ref>postgresql</driver-ref>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
       <jdbc-url>jdbc:postgresql:italien_test</jdbc-url>
-      <user-name>jacques</user-name>
-      <user-password>df9fdf9bdfc0dfdfdfc6dfc3dfcfdf98</user-password>
       <libraries />
     </data-source>
   </component>
 </project>
-

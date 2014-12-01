@@ -81,4 +81,8 @@ class Verbe < ActiveRecord::Base
     true
   end
 
+  def self.api_v1
+    "coucou les verbes"
+  end
+
 end

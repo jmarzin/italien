@@ -77,4 +77,7 @@ class Forme < ActiveRecord::Base
     Forme::FORMES[self.rang_forme][2]+' du verbe '+self.verbe.infinitif
   end
 
+  def self.api_v1
+    "coucou les formes"
+  end
 end
