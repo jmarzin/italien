@@ -18,7 +18,13 @@ class Category < ActiveRecord::Base
   end
 
   def self.api_v1
-    "coucou les catégories"
+    liste = []
+    Category.all.each do |cat|
+      if cat.numero <= 22
+        liste << [cat.numero, cat.description]
+      end
+    end
+    liste
   end
 
 end

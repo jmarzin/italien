@@ -28,7 +28,7 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      resources :categories, :mots, :verbes, :formes, only: [:index]
+      resources :date_categories, :categories, :mots, :verbes, :formes, only: [:index]
     end
   end
 
