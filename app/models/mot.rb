@@ -55,7 +55,13 @@ class Mot < ActiveRecord::Base
   end
 
   def self.api_v1
-    "coucou les mots"
+    liste = []
+    Mot.order(:mot_directeur, :francais).each do |mot|
+      if mot.category.numero <= 22
+        liste << [mot.category.numero, mot.francais, mot.mot_directeur, mot.italien]
+      end
+    end
+    liste
   end
 
 end

@@ -78,6 +78,25 @@ class Forme < ActiveRecord::Base
   end
 
   def self.api_v1
-    "coucou les formes"
+    liste = []
+    Forme.order(:verbe_id, :rang_forme).each do |forme|
+      if forme.rang_forme <= 23 then
+        i = forme.rang_forme + 3
+      elsif forme.rang_forme <= 35 then
+        i = forme.rang_forme + 9
+      elsif forme.rang_forme <= 36 then
+        i = 0
+      elsif forme.rang_forme <= 41 then
+        i = forme.rang_forme + 8
+      elsif forme.rang_forme <= 47 then
+        i = forme.rang_forme - 15
+      else
+        i = forme.rang_forme - 47
+      end
+      if i > 0 then
+        liste << [forme.verbe_id, i, forme.italien]
+      end
+    end
+    liste
   end
 end

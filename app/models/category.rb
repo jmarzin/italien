@@ -19,7 +19,7 @@ class Category < ActiveRecord::Base
 
   def self.api_v1
     liste = []
-    Category.all.each do |cat|
+    Category.order(:numero).each do |cat|
       if cat.numero <= 22
         liste << [cat.numero, cat.description]
       end
