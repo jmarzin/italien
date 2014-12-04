@@ -83,7 +83,7 @@ class Verbe < ActiveRecord::Base
 
   def self.api_v1
     liste = []
-    Verbe.order(:infinitif).each do |verbe|
+    Verbe.order(:id).each do |verbe|
       liste << [verbe.id, verbe.infinitif]
     end
     liste
