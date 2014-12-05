@@ -57,9 +57,7 @@ class Mot < ActiveRecord::Base
   def self.api_v1
     liste = []
     Mot.order(:category_id, :mot_directeur, :francais).each do |mot|
-      if mot.category.numero <= 22
-        liste << [mot.category.numero, mot.francais, mot.mot_directeur, mot.italien]
-      end
+      liste << [mot.category.numero, mot.francais, mot.mot_directeur, mot.italien]
     end
     liste
   end
