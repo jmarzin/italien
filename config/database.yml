@@ -25,7 +25,7 @@ default: &default
 
 development:
   <<: *default
-  database: anglais_development
+  database: italien_development
 
   # The specified database role being used to connect to postgres.
   # To create additional roles in postgres see `$ createuser --help`.
@@ -59,7 +59,7 @@ development:
 # Do not set this db to the same as development or production.
 test: &test
   <<: *default
-  database: anglais_test
+  database: italien_test
 
 # As with config/secrets.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
@@ -82,9 +82,9 @@ test: &test
 #
 production:
   <<: *default
-  database: anglais_production
-  username: anglais
-  password: <%= ENV['ANGLAIS_DATABASE_PASSWORD'] %>
+  database: italien_production
+  username: italien
+  password: <%= ENV['ITALIEN_DATABASE_PASSWORD'] %>
 
 cucumber:
   <<: *test
