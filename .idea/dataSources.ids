@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component name="dataSourceStorage">
-  <data-source name="Rails italien: development" uuid="0f84220e-42e4-41e8-b5f7-9e33937985dd">
+  <data-source name="Rails anglais: development" uuid="0f84220e-42e4-41e8-b5f7-9e33937985dd">
     <database-info product="" version="" jdbc-version="" driver-name="" driver-version=""/>
   </data-source>
-  <data-source name="Rails italien: test" uuid="3d19a3d7-2a57-4d51-8bf5-49717cf4f904">
+  <data-source name="Rails anglais: test" uuid="3d19a3d7-2a57-4d51-8bf5-49717cf4f904">
     <database-info product="" version="" jdbc-version="" driver-name="" driver-version=""/>
   </data-source>
-  <data-source name="Rails italien: production" uuid="01570b8d-00f2-49fd-bc58-0fa92c6ea420">
+  <data-source name="Rails anglais: production" uuid="01570b8d-00f2-49fd-bc58-0fa92c6ea420">
     <database-info product="" version="" jdbc-version="" driver-name="" driver-version=""/>
   </data-source>
-  <data-source name="Rails italien: cucumber" uuid="caba3fde-3a61-40be-8585-90a86dc8e662">
+  <data-source name="Rails anglais: cucumber" uuid="caba3fde-3a61-40be-8585-90a86dc8e662">
     <database-info product="" version="" jdbc-version="" driver-name="" driver-version=""/>
   </data-source>
 </component>

@@ -1,7 +1,7 @@
-set :application, 'italien'
-set :repo_url, 'https://github.com/jmarzin/italien.git'
+set :application, 'anglais'
+set :repo_url, 'https://github.com/jmarzin/anglais.git'
 
-set :deploy_to, '/home/deploy/italien'
+set :deploy_to, '/home/deploy/anglais'
 
 set :linked_files, %w{config/database.yml}
 set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
