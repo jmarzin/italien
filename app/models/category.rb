@@ -25,4 +25,12 @@ class Category < ActiveRecord::Base
     liste
   end
 
+  def self.api_v2
+    liste = []
+    Category.order(:numero).each do |cat|
+      liste << [cat.id, cat.numero, cat.description]
+    end
+    liste
+  end
+
 end

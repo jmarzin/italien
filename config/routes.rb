@@ -33,6 +33,12 @@ Rails.application.routes.draw do
                 :date_verbes, :verbes,
                 :date_formes, :formes, only: [:index]
     end
+    namespace :v2 do
+      resources :date_categories, :categories,
+                :date_mots, :mots,
+                :date_verbes, :verbes,
+                :date_formes, :formes, only: [:index]
+    end
   end
 
   # The priority is based upon order of creation: first created -> highest priority.
