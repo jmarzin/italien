@@ -62,7 +62,7 @@ class Mot < ActiveRecord::Base
     liste
   end
 
-  def self.api_v2
+  def self.api_v2 
     liste = []
     Mot.order(:category_id, :mot_directeur, :francais).each do |mot|
       liste << [mot.id, mot.category_id, mot.francais, mot.mot_directeur, mot.italien]
