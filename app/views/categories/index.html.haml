@@ -15,7 +15,7 @@
       %td= link_to 'Voir', category
       -if @peut_supprimer
         %td= link_to 'Corr', edit_category_path(category)
-        %td= link_to 'Supp', category, :method => :delete, :data => { :confirm => 'Supprimer ?' }
+        %td= link_to 'Supp', category, :method => :delete, :data => { :confirm => 'Supprimer définitivement ?' }
       -else
         %td
         %td

@@ -12,11 +12,9 @@ class SauveController < ApplicationController
     unless current_user.admin
       redirect_to mots_path, notice: "Vous ne pouvez pas sauvegarder les mots et formes verbales"
     end
-    unless Rails.env.production?
-      Mot.sauve(current_user.id)
-      Verbe.sauve
-      Category.sauve
-    end
+    Mot.sauve(current_user.id)
+    Verbe.sauve
+    Category.sauve
     redirect_to mots_path, notice: "Mots et formes verbales sauvegardées."
   end
 

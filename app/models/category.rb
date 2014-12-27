@@ -1,5 +1,5 @@
 class Category < ActiveRecord::Base
-  has_many :mots, dependent: :restrict_with_error
+  has_many :mots, dependent: :destroy
   has_many :scores_mots, dependent: :restrict_with_error
 
   def self.sauve
