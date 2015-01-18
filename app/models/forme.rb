@@ -112,7 +112,7 @@ class Forme < ActiveRecord::Base
       elsif forme.rang_forme <= 41 then
         i = forme.rang_forme + 8
       elsif forme.rang_forme <= 47 then
-        i = forme.rang_forme - 17
+        i = forme.rang_forme - 15
       else
         i = forme.rang_forme - 47
       end
